@@ -307,6 +307,18 @@ img { max-width: 100%; height: auto; display: block; }
   color: var(--c-white);
 }
 
+.related-centers__grid a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(255,255,255,0.4);
+  transition: text-decoration-color 0.15s;
+}
+
+.related-centers__grid a:hover {
+  text-decoration-color: var(--c-white);
+}
+
 /* =============================================================================
    INTERDISCIPLINARY HUB  (orbital)
    Figma: 1440×652, fills IMAGE ref=29d9b9807cc2 (FILL scale)
