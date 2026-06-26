@@ -1,0 +1,646 @@
+/* =============================================================================
+   Atlassian Spacing Tokens (8px base unit)
+   https://atlassian.design/foundations/spacing
+   ============================================================================= */
+:root {
+  --space-025:  2px;   /* 0.25×  0.125rem */
+  --space-050:  4px;   /* 0.5×   0.25rem  */
+  --space-075:  6px;   /* 0.75×  0.375rem */
+  --space-100:  8px;   /* 1×     0.5rem   */
+  --space-150: 12px;   /* 1.5×   0.75rem  */
+  --space-200: 16px;   /* 2×     1rem     */
+  --space-250: 20px;   /* 2.5×   1.25rem  */
+  --space-300: 24px;   /* 3×     1.5rem   */
+  --space-400: 32px;   /* 4×     2rem     */
+  --space-500: 40px;   /* 5×     2.5rem   */
+  --space-600: 48px;   /* 6×     3rem     */
+  --space-800: 64px;   /* 8×     4rem     */
+  --space-1000: 80px;  /* 10×    5rem     */
+
+  /* ── Brand colours ── */
+  --color-bg:         #ffffff;
+  --color-light-bg:   #f8f7f4;
+  --color-dark:       #0d0d0c;
+  --color-separator:  #1e1e1e;
+  --color-accent:     #5533ee;
+  --color-red:        #f03d1f;
+  --color-gray:       #888680;
+  --color-white:      #ffffff;
+
+  /* ── Typography ── */
+  --font-serif: 'EB Garamond', Georgia, 'Times New Roman', serif;
+  --font-sans:  'DM Sans', system-ui, -apple-system, sans-serif;
+  --font-mono:  'Courier New', Courier, monospace;
+
+  /* ── Layout ── */
+  --max-width: 1440px;
+}
+
+/* =============================================================================
+   Reset & Base
+   ============================================================================= */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-dark);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+ul, ol { list-style: none; }
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* =============================================================================
+   Container — centres content, applies horizontal rhythm
+   spacing.200 (16px) × 5 = 80px ≈ space.1000 per side
+   ============================================================================= */
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: var(--space-1000); /* 80px each side — "page-level spacing" */
+}
+
+/* =============================================================================
+   Navigation
+   Height: 61px; padding uses space.250 (20px) top/bottom relative to text
+   Gap between links: space.400 (32px) — "group by proximity"
+   ============================================================================= */
+.nav {
+  background: var(--color-dark);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: 61px;
+}
+
+.nav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+}
+
+/* Logo */
+.nav__logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-150); /* 12px — small component spacing */
+  color: var(--color-white);
+}
+
+.nav__logo-mark {
+  flex-shrink: 0;
+  opacity: 0.9;
+}
+
+.nav__logo-wordmark {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--color-white);
+}
+
+/* Nav links — DM Sans SemiBold 20px */
+.nav__links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-400); /* 32px — "group by proximity" for related items */
+}
+
+.nav__links a {
+  font-family: var(--font-sans);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--color-white);
+  transition: opacity 0.15s ease;
+}
+
+.nav__links a:hover { opacity: 0.7; }
+
+.nav__link--active { color: var(--color-red) !important; }
+
+/* =============================================================================
+   Hero
+   Vertical padding: space.1000 (80px) top + bottom → total area ~232px
+   matches Figma header minus nav (293px − 61px = 232px)
+   ============================================================================= */
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding-block: var(--space-1000); /* 80px */
+  text-align: center;
+}
+
+/* Placeholder for the Figma background image (imageRef 0f6332de…) */
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #ddd9d0 0%, #ece9e2 55%, #f5f3ee 100%);
+  z-index: 0;
+}
+
+/* EB Garamond SemiBold 72px, letter-spacing −0.01em */
+.hero__title {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-serif);
+  font-size: 72px;
+  font-weight: 600;
+  color: var(--color-dark);
+  letter-spacing: -0.01em;
+  line-height: 1.02;
+}
+
+/* =============================================================================
+   Separator — 84px near-black band between hero and mission
+   ============================================================================= */
+.separator {
+  height: 84px;
+  background: var(--color-separator);
+}
+
+/* =============================================================================
+   Mission Statement
+   Section padding: space.1000 (80px) — "major content alignment"
+   Gap between content and quote: space.800 (64px)
+   ============================================================================= */
+.mission {
+  background: var(--color-bg);
+  padding-block: var(--space-1000); /* 80px */
+}
+
+.mission__inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-800); /* 64px between content and quote */
+}
+
+/* EB Garamond SemiBold 48px, purple */
+.mission__title {
+  font-family: var(--font-serif);
+  font-size: 48px;
+  font-weight: 600;
+  color: var(--color-accent);
+  line-height: 1.08;
+  margin-bottom: var(--space-400); /* 32px below heading — "create hierarchy" */
+}
+
+/* DM Sans Light 20px */
+.mission__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300); /* 24px between paragraphs — "introduce rhythm" */
+  max-width: 1205px;
+}
+
+.mission__body p {
+  font-family: var(--font-sans);
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--color-dark);
+}
+
+/* Blockquote — EB Garamond Regular 24px */
+.mission__quote {
+  max-width: 1153px;
+}
+
+.mission__quote blockquote {
+  padding-left: var(--space-400); /* 32px indent — "group by proximity" */
+  border-left: 1.5px solid rgba(13, 13, 12, 0.25);
+  margin-bottom: var(--space-200); /* 16px before attribution */
+}
+
+.mission__quote blockquote p {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--color-dark);
+  line-height: 1.5;
+}
+
+/* DM Sans Medium 18px, gray */
+.mission__quote figcaption {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--color-gray);
+  padding-left: var(--space-400); /* align with quote text */
+}
+
+/* =============================================================================
+   Related Centers at Penn
+   Purple background, white text
+   Padding: space.1000 (80px) — "page-level spacing"
+   Grid gap: space.800 (64px) between columns
+   ============================================================================= */
+.related-centers {
+  background: var(--color-accent);
+  padding-block: var(--space-1000); /* 80px */
+}
+
+.related-centers__inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-600); /* 48px between heading and list grid */
+}
+
+/* DM Sans Medium 35px */
+.related-centers__title {
+  font-family: var(--font-sans);
+  font-size: 35px;
+  font-weight: 500;
+  color: var(--color-white);
+  line-height: 1.2;
+}
+
+.related-centers__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-800); /* 64px — "major content alignment" */
+}
+
+.related-centers__grid ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300); /* 24px between list items — "introduce rhythm" */
+}
+
+/* DM Sans Medium 30px */
+.related-centers__grid li {
+  font-family: var(--font-sans);
+  font-size: 30px;
+  font-weight: 500;
+  color: var(--color-white);
+  line-height: 1.3;
+}
+
+/* =============================================================================
+   Orbital / Interdisciplinary Hub
+   Dark background, white text
+   Padding: space.1000 (80px)
+   ============================================================================= */
+.orbital {
+  background: var(--color-dark);
+  padding-block: var(--space-1000); /* 80px */
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle radial accent — evokes the Figma background overlay */
+.orbital::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 70% 80% at 85% 50%,
+    rgba(85, 51, 238, 0.12) 0%,
+    transparent 65%
+  );
+  pointer-events: none;
+}
+
+.orbital__inner { position: relative; z-index: 1; }
+
+.orbital__content { max-width: 851px; }
+
+/* EB Garamond Medium 48px */
+.orbital__title {
+  font-family: var(--font-serif);
+  font-size: 48px;
+  font-weight: 500;
+  color: var(--color-white);
+  line-height: 1.08;
+  margin-bottom: var(--space-400); /* 32px */
+}
+
+/* DM Sans Light 18px */
+.orbital__lead {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  font-weight: 300;
+  color: var(--color-white);
+  line-height: 1.6;
+  margin-bottom: var(--space-500); /* 40px — "group by similarity" */
+}
+
+/* School list — numbered rows with white dividers */
+.school-list {
+  margin-bottom: var(--space-400); /* 32px */
+}
+
+.school-list li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-300); /* 24px between number and name */
+  height: 40px;          /* matches Figma school-row h=40 */
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.school-list li:last-child {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Courier New Regular 11px */
+.school-list__num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.55);
+  min-width: var(--space-400); /* 32px — icon-text gap usage */
+  flex-shrink: 0;
+}
+
+/* DM Sans Light 12px */
+.school-list__name {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--color-white);
+  letter-spacing: 0.02em;
+}
+
+/* DM Sans Regular 13px, faint */
+.orbital__funding {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(255, 255, 254, 0.7);
+  line-height: 1.55;
+  max-width: 851px;
+}
+
+/* =============================================================================
+   Supporters
+   White band; uses space.500 (40px) vertical — "medium" padding for denser layout
+   ============================================================================= */
+.supporters {
+  background: var(--color-white);
+  padding-block: var(--space-500); /* 40px */
+  border-bottom: 1px solid rgba(13, 13, 12, 0.08);
+}
+
+.supporters__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-500); /* 40px — group label with logos */
+}
+
+/* DM Sans Bold 9px — "small" label */
+.supporters__label {
+  font-family: var(--font-sans);
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--color-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+
+.supporters__logos {
+  display: flex;
+  align-items: center;
+  gap: var(--space-500); /* 40px between logos */
+}
+
+.supporters__logo {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* =============================================================================
+   Dark Bottom — wraps Newsletter + Footer on shared dark background
+   ============================================================================= */
+.dark-bottom { background: var(--color-dark); }
+
+/* =============================================================================
+   Newsletter
+   Padding: space.800 (64px) — page-level; divider uses space.025 (2px border)
+   Layout: space-between row; gap space.800 (64px) between copy and form
+   ============================================================================= */
+.newsletter {
+  padding-block: var(--space-800); /* 64px */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.newsletter__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-800); /* 64px */
+}
+
+/* EB Garamond Bold 30px */
+.newsletter__title {
+  font-family: var(--font-serif);
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--color-white);
+  margin-bottom: var(--space-100); /* 8px — tight coupling within component */
+}
+
+/* DM Sans Light 20px */
+.newsletter__desc {
+  font-family: var(--font-sans);
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--color-white);
+  line-height: 1.5;
+  max-width: 508px;
+}
+
+/* Form: email input (260px) + subscribe button (113px) — flush join */
+.newsletter__form {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.newsletter__form input[type="email"] {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--color-dark);
+  background: var(--color-white);
+  border: none;
+  outline: none;
+  padding-inline: var(--space-200); /* 16px — input padding */
+  height: 39px;
+  width: 260px;
+  transition: box-shadow 0.15s ease;
+}
+
+.newsletter__form input[type="email"]:focus {
+  box-shadow: inset 0 0 0 2px var(--color-accent);
+}
+
+.newsletter__form input::placeholder { color: #9ca3af; }
+
+.newsletter__form button {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-white);
+  background: var(--color-red);
+  border: none;
+  cursor: pointer;
+  height: 39px;
+  width: 113px;
+  padding-inline: var(--space-200); /* 16px */
+  transition: opacity 0.15s ease;
+}
+
+.newsletter__form button:hover { opacity: 0.88; }
+
+/* =============================================================================
+   Footer
+   Padding: space.800 (64px) — "major content alignment"
+   Grid gap: space.800 (64px) between brand and nav columns
+   ============================================================================= */
+.footer {
+  padding-block: var(--space-800); /* 64px */
+}
+
+.footer__inner {
+  display: flex;
+  gap: var(--space-800); /* 64px — brand vs nav columns */
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+/* Brand column */
+.footer__brand {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200); /* 16px between brand elements — card section spacing */
+  max-width: 320px;
+}
+
+.footer__logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-150); /* 12px */
+  color: var(--color-white);
+}
+
+.footer__logo-mark { flex-shrink: 0; }
+
+.footer__logo-wordmark {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--color-white);
+}
+
+/* DM Sans Light 12.8px */
+.footer__tagline {
+  font-family: var(--font-sans);
+  font-size: 12.8px;
+  font-weight: 300;
+  color: var(--color-white);
+  line-height: 1.55;
+}
+
+.footer__email {
+  font-family: var(--font-sans);
+  font-size: 12.8px;
+  font-weight: 400;
+  color: var(--color-red);
+  transition: opacity 0.15s ease;
+}
+
+.footer__email:hover { opacity: 0.8; }
+
+/* Social icons row — gap space.200 (16px) */
+.footer__social {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200); /* 16px — "small component padding" */
+  margin-top: var(--space-100); /* 8px */
+}
+
+.footer__social-link {
+  display: flex;
+  align-items: center;
+  color: var(--color-white);
+  opacity: 0.85;
+  transition: opacity 0.15s ease;
+}
+
+.footer__social-link:hover { opacity: 1; }
+
+/* Nav columns — gap space.400 (32px) between columns */
+.footer__nav {
+  display: flex;
+  gap: var(--space-400); /* 32px — "group by similarity" */
+  align-items: flex-start;
+}
+
+.footer__nav-col { min-width: 170px; }
+
+/* DM Sans Bold 9px — section label */
+.footer__nav-heading {
+  font-family: var(--font-sans);
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--color-white);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: var(--space-200); /* 16px — "group by proximity" */
+}
+
+/* DM Sans Light 12.8px */
+.footer__nav-col ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200); /* 16px between links — "introduce rhythm" */
+}
+
+.footer__nav-col a {
+  font-family: var(--font-sans);
+  font-size: 12.8px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.55;
+  transition: color 0.15s ease;
+}
+
+.footer__nav-col a:hover { color: var(--color-white); }
