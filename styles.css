@@ -448,7 +448,7 @@ img { max-width: 100%; height: auto; display: block; }
    ============================================================================= */
 .supporters {
   background: var(--c-white);
-  height: 97px;
+  height: 180px;
   display: flex;
   align-items: center;
 }
@@ -480,12 +480,12 @@ img { max-width: 100%; height: auto; display: block; }
 .supporters__logo-link:hover { opacity: 0.75; }
 
 .supporters__logo--knight {
-  height: 33px;
+  height: 65px;
   width: auto;
 }
 
 .supporters__logo--upenn {
-  height: 55px;
+  height: 105px;
   width: auto;
 }
 
