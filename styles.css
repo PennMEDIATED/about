@@ -143,7 +143,8 @@ img { max-width: 100%; height: auto; display: block; }
    ============================================================================= */
 .hero {
   position: relative;
-  height: 232px;                  /* 293 total header − 61 nav = 232 */
+  margin-top: 50px;
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -190,7 +191,8 @@ img { max-width: 100%; height: auto; display: block; }
    ============================================================================= */
 .mission {
   background: var(--c-bg);
-  padding-block: var(--space-1000);  /* 80px — page-level spacing */
+  padding-top: 20px;
+  padding-bottom: var(--space-1000); /* 80px — page-level spacing */
 }
 
 .mission__inner {
@@ -461,9 +463,9 @@ img { max-width: 100%; height: auto; display: block; }
 
 .supporters__label {
   font-family: var(--f-sans);
-  font-size: 9px;
+  font-size: 24px;
   font-weight: 700;
-  line-height: 13.5px;
+  line-height: 30px;
   letter-spacing: 1.8px;            /* Figma ls=1.8 */
   color: var(--c-dark);
   text-transform: uppercase;
@@ -485,7 +487,7 @@ img { max-width: 100%; height: auto; display: block; }
 }
 
 .supporters__logo--upenn {
-  height: 105px;
+  height: 120px;
   width: auto;
 }
 
