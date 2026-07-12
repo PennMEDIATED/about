@@ -11,11 +11,6 @@
 </head>
 <body>
 
-  <!-- ── Hero ────────────────────────────────────────────────────── -->
-  <header class="hero">
-    <h1 class="hero__title">About the Center</h1>
-  </header>
-
   <!-- ── Mission Statement ───────────────────────────────────────── -->
   <section class="mission" aria-labelledby="mission-heading">
     <div class="mission__inner">
@@ -24,12 +19,6 @@
         <p>The Penn Center on Media, Technology and Democracy (Penn MEDIATED) is committed to independent research on the information ecosystem and its impact on democracy.</p>
         <p>Our mission is to advance our collective understanding of the information landscape through cutting-edge science—then leverage that research to foster a more informed society and strengthen the foundations of democracy. We focus on the media organizations and the online platforms, the incentives and the algorithms, that determine which ideas and beliefs spread, and which don't. Penn MEDIATED's faculty and scholars are distinguished by their use of emerging technology for data-driven research of the information ecosystem, including novel data collections, large-scale cloud computing, and innovative applications of AI.</p>
       </div>
-      <figure class="mission__quote">
-        <blockquote>
-          <p>&#8220;There is a critical societal need to better understand &#8212; and respond to &#8212; the way media and information technologies mediate and even influence global conversations. Championing truth and upholding democracy are important elements of Penn&#8217;s strategic framework, In Principle and Practice.&#8221;</p>
-        </blockquote>
-        <figcaption>J. Larry Jameson &middot;&nbsp; President, University of Pennsylvania</figcaption>
-      </figure>
       <figure class="mission__quote">
         <blockquote>
           <p>&#8220;The health of our democracy depends on the health of our information ecosystem. Seeking truth and understanding is not a utopian ideal; it is a prerequisite for a functioning republic. I am proud to join Penn MEDIATED and contribute to its vision of translating our rigorous research into democratic well-being.&#8221;</p>
@@ -92,6 +81,18 @@
     </div>
   </section>
 
+  <!-- ── Jameson Quote ────────────────────────────────────────────── -->
+  <section class="mission" aria-label="Quote">
+    <div class="mission__inner">
+      <figure class="mission__quote">
+        <blockquote>
+          <p>&#8220;There is a critical societal need to better understand &#8212; and respond to &#8212; the way media and information technologies mediate and even influence global conversations. Championing truth and upholding democracy are important elements of Penn&#8217;s strategic framework, In Principle and Practice.&#8221;</p>
+        </blockquote>
+        <figcaption>J. Larry Jameson &middot;&nbsp; President, University of Pennsylvania</figcaption>
+      </figure>
+    </div>
+  </section>
+
   <!-- ── Related Centers ─────────────────────────────────────────── -->
   <section class="related-centers" aria-labelledby="related-heading">
     <div class="related-centers__inner">
@@ -137,87 +138,16 @@
         <h3 id="newsletter-heading" class="newsletter__title">Stay in the loop</h3>
         <p class="newsletter__desc">Research updates, event announcements, and center news &#8212; delivered to your inbox.</p>
       </div>
-      <form class="newsletter__form" action="#" method="post" aria-label="Subscribe to newsletter">
-        <label for="newsletter-email" class="sr-only">Your email address</label>
-        <input
-          id="newsletter-email"
-          type="email"
-          name="email"
-          placeholder="your@email.com"
-          autocomplete="email"
-          required
-        >
-        <button type="submit">Subscribe</button>
-      </form>
+      <a
+        class="newsletter__cta"
+        href="https://signup.e2ma.net/signup/2017639/1984707/"
+        target="_blank"
+        rel="noopener"
+      >
+        <span class="newsletter__cta-label">Subscribe Here</span>
+      </a>
     </div>
   </section>
-
-  <!-- ── Footer ─────────────────────────────────────────────────── -->
-  <footer class="footer">
-    <div class="footer__inner">
-
-      <div class="footer__brand">
-        <a href="https://infodem.upenn.edu" class="footer__logo" aria-label="Penn MEDIATED — home">
-          <img src="assets/penn-mediated-logo.svg" alt="Penn MEDIATED" class="footer__logo-img" width="222" height="45">
-        </a>
-        <p class="footer__tagline">Penn&#8217;s interdisciplinary hub for media, technology, and democracy</p>
-        <a href="mailto:contact-us@infodem.upenn.edu" class="footer__email">contact-us@infodem.upenn.edu</a>
-        <div class="footer__social" aria-label="Social media">
-          <a href="https://www.youtube.com/@PennMediated" target="_blank" rel="noopener" aria-label="YouTube" class="footer__social-link">
-            <svg width="20" height="14" viewBox="0 0 20 14" fill="currentColor" aria-hidden="true">
-              <path d="M19.58 2.19A2.5 2.5 0 0 0 17.82.44C16.27 0 10 0 10 0S3.73 0 2.18.44A2.5 2.5 0 0 0 .42 2.19C0 3.73 0 7 0 7s0 3.27.42 4.81a2.5 2.5 0 0 0 1.76 1.75C3.73 14 10 14 10 14s6.27 0 7.82-.44a2.5 2.5 0 0 0 1.76-1.75C20 10.27 20 7 20 7s0-3.27-.42-4.81zM8 10V4l5.33 3L8 10z"/>
-            </svg>
-          </a>
-          <a href="https://bsky.app/profile/penn-mediated.bsky.social" target="_blank" rel="noopener" aria-label="Bluesky" class="footer__social-link">
-            <svg width="16" height="14" viewBox="0 0 16 14" fill="currentColor" aria-hidden="true">
-              <path d="M8 5.56C7.1 4.15 4.6 0 3 0 1.2 0 0 1.35 0 3.2c0 1.1.52 2.07 1.33 2.7C2.33 6.5 4 6.65 5.67 6.2L8 13l2.33-6.8C12 6.65 13.67 6.5 14.67 5.9 15.48 5.27 16 4.3 16 3.2 16 1.35 14.8 0 13 0c-1.6 0-4.1 4.15-5 5.56z"/>
-            </svg>
-          </a>
-          <a href="https://github.com/Penn-MEDIATED" target="_blank" rel="noopener" aria-label="GitHub" class="footer__social-link">
-            <svg width="20" height="19" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M10 0C4.48 0 0 4.48 0 10a10 10 0 0 0 6.84 9.5c.5.09.68-.21.68-.48v-1.7C4.73 17.9 4.14 16 4.14 16c-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.64.35-1.08.63-1.33-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.98 1.03-2.68-.1-.26-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.56 9.56 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.39.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.85-2.34 4.7-4.57 4.95.36.31.68.92.68 1.85v2.74c0 .27.16.58.68.48A10.01 10.01 0 0 0 20 10c0-5.52-4.48-10-10-10z"/>
-            </svg>
-          </a>
-          <a href="https://www.linkedin.com/company/penn-center-on-media-technology-and-democracy/" target="_blank" rel="noopener" aria-label="LinkedIn" class="footer__social-link">
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor" aria-hidden="true">
-              <path d="M16.34 16.34h-2.84V11.9c0-1.06-.02-2.43-1.48-2.43-1.48 0-1.7 1.16-1.7 2.35v4.52H7.48V6.75h2.73v1.24h.04c.38-.72 1.3-1.48 2.68-1.48 2.87 0 3.4 1.89 3.4 4.35v5.48zM4 5.5a1.65 1.65 0 1 1 0-3.3 1.65 1.65 0 0 1 0 3.3zm1.42 10.84H2.57V6.75h2.85v9.59zM17.77 0H.22C.1 0 0 .1 0 .22v17.56C0 17.9.1 18 .22 18h17.55c.12 0 .23-.1.23-.22V.22C18 .1 17.89 0 17.77 0z"/>
-            </svg>
-          </a>
-        </div>
-      </div>
-
-      <nav class="footer__nav" aria-label="Footer links">
-        <div class="footer__nav-col">
-          <h4 class="footer__nav-heading">Research</h4>
-          <ul role="list">
-            <li><a href="https://infodem.upenn.edu/llm-civic-discourse/" target="_blank" rel="noopener">LLM Civic Discourse</a></li>
-            <li><a href="https://infodem.upenn.edu/research-compendium/" target="_blank" rel="noopener">Media Fragmentation</a></li>
-            <li><a href="https://infodem.upenn.edu/research-compendium/" target="_blank" rel="noopener">Hate Speech &amp; LLMs</a></li>
-            <li><a href="https://infodem.upenn.edu/research-compendium/" target="_blank" rel="noopener">Compendium</a></li>
-          </ul>
-        </div>
-        <div class="footer__nav-col">
-          <h4 class="footer__nav-heading">Center</h4>
-          <ul role="list">
-            <li><a href="https://infodem.upenn.edu/about/" target="_blank" rel="noopener">About</a></li>
-            <li><a href="https://infodem.upenn.edu/team/" target="_blank" rel="noopener">Our Team</a></li>
-            <li><a href="https://infodem.upenn.edu/faculty/" target="_blank" rel="noopener">Affiliated Faculty</a></li>
-            <li><a href="https://infodem.upenn.edu/job-openings/" target="_blank" rel="noopener">Job Openings</a></li>
-          </ul>
-        </div>
-        <div class="footer__nav-col">
-          <h4 class="footer__nav-heading">Resources</h4>
-          <ul role="list">
-            <li><a href="https://infodem.upenn.edu/data/" target="_blank" rel="noopener">Data &amp; PennMAP</a></li>
-            <li><a href="https://infodem.upenn.edu/grants/" target="_blank" rel="noopener">Grants</a></li>
-            <li><a href="https://infodem.upenn.edu/events/" target="_blank" rel="noopener">Events</a></li>
-            <li><a href="https://app.e2ma.net/app2/audience/signup/2017639/1984707/" target="_blank" rel="noopener">Newsletter</a></li>
-          </ul>
-        </div>
-      </nav>
-
-    </div>
-  </footer>
 
 </body>
 </html>
