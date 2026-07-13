@@ -273,6 +273,9 @@ img { max-width: 100%; height: auto; display: block; }
 .related-centers {
   background: var(--c-accent);
   padding-block: var(--space-1000);  /* 80px */
+  /* Newsletter gradient starts at this same purple, so the seam between
+     the two sections is otherwise invisible — a visible gap separates them. */
+  margin-bottom: var(--space-1000);
 }
 
 .related-centers__inner {
