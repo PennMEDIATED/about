@@ -25,7 +25,11 @@
   --c-accent:     #5533ee;          /* rgb(85,51,238)  */
   --c-red:        #f03d1f;          /* rgb(240,61,31)  */
   --c-gray:       #888680;          /* rgb(136,134,128)*/
+  --c-gray-dark:  #54534f;          /* rgb(84,83,79) — opaque body copy, ~8:1 on white. Backported
+                                        from /home per this section's own prior note: prefer this
+                                        over --c-gray for paragraph text now that we have some. */
   --c-white:      #ffffff;
+  --c-pale-orange: #fce4dc;         /* --c-red tinted ~12% onto white — matches /grants' callout boxes */
 
   /* Paragraph+Background gradient (orbital overlay + newsletter bg)
      stop 0 = #5533ee, stop 81% = #df3611 (rgb 223,54,17)
@@ -71,6 +75,7 @@ img { max-width: 100%; height: auto; display: block; }
 .mission__inner,
 .related-centers__inner,
 .orbital__inner,
+.partners__inner,
 .supporters__inner,
 .newsletter__inner,
 .footer__inner {
@@ -218,7 +223,9 @@ img { max-width: 100%; height: auto; display: block; }
   display: flex;
   flex-direction: column;
   gap: var(--space-300);           /* 24px between paragraphs — rhythm */
-  max-width: 1205px;
+  /* No max-width: fills the section's full padded width so left/right
+     space stays equal, and matches .mission__title's left edge above it
+     instead of insetting from a centered narrower column. */
 }
 
 .mission__body p {
@@ -255,9 +262,10 @@ img { max-width: 100%; height: auto; display: block; }
   color: var(--c-dark);
 }
 
-/* anno-quote-attr: DM Sans Medium 18px, fill rgb(136,134,128), ls=1.2, lh=21.6 */
+/* anno-quote-attr: EB Garamond Medium 18px, fill rgb(136,134,128), ls=1.2, lh=21.6
+   Serif to match the quote text above it, not the sans body copy elsewhere. */
 .mission__quote figcaption {
-  font-family: var(--f-sans);
+  font-family: var(--f-serif);
   font-size: 18px;
   font-weight: 500;
   line-height: 21.6px;
@@ -268,65 +276,101 @@ img { max-width: 100%; height: auto; display: block; }
 
 /* =============================================================================
    RELATED CENTERS AT PENN  (Section)
-   Figma: 1437×712, fill/bg rgb(85,51,238)
+   Black-on-white block, same heading/lede format and logo-block-grid
+   pattern as .partners — flipped with .partners' old white-bg/black-text
+   treatment; .partners now takes this section's old purple/white
+   treatment. Keep this note if either swaps again so the pairing stays
+   intentional, not accidental drift.
    ============================================================================= */
 .related-centers {
-  background: var(--c-accent);
+  background: var(--c-bg);
   padding-block: var(--space-1000);  /* 80px */
-  /* Newsletter gradient starts at this same purple, so the seam between
-     the two sections is otherwise invisible — a visible gap separates them. */
   margin-bottom: var(--space-1000);
 }
 
 .related-centers__inner {
   display: flex;
   flex-direction: column;
-  gap: var(--space-600);             /* 48px between heading and grid */
+  gap: var(--space-300);             /* 24px heading -> lede, matches /grants' rhythm */
 }
 
-/* DM Sans Medium 35.2px, fill white, ls=-0.704, lh=42.24 */
 .related-centers__title {
   font-family: var(--f-sans);
-  font-size: 35.2px;
-  font-weight: 500;
-  line-height: 42.24px;
-  letter-spacing: -0.704px;          /* Figma ls=-0.704 */
-  color: var(--c-white);
+  font-size: 40px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--c-dark);
+}
+
+.related-centers__lede {
+  font-family: var(--f-sans);
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 25.2px;
+  color: var(--c-dark);
+  margin-bottom: var(--space-300);   /* 24px before the grid */
 }
 
 .related-centers__grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-200);             /* 16px column gap */
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-200);
+  background: var(--c-pale-orange);
+  padding: var(--space-300);
 }
 
-/* DM Sans Medium 30px, fill white, ls=-0.704, lh=42.24 */
-.related-centers__grid ul {
+@media (max-width: 900px) {
+  .related-centers__grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .related-centers__grid { grid-template-columns: 1fr; }
+}
+
+.center-block {
   display: flex;
-  flex-direction: column;
-  gap: 0;
+  align-items: center;
+  justify-content: center;
+  min-height: 108px;
+  padding: var(--space-300) var(--space-200);
+  background: var(--c-white);
+  border: 1px solid rgba(13, 13, 12, 0.08);
+  transition: border-color 0.15s;
 }
 
-.related-centers__grid li {
-  font-family: var(--f-sans);
-  font-size: 30px;
-  font-weight: 500;
-  line-height: 42.24px;             /* Figma lh=42.24 */
-  letter-spacing: -0.704px;         /* Figma ls=-0.704 */
-  color: var(--c-white);
+.center-block:hover { border-color: var(--c-red); }
+
+/* max-height + max-width with height/width auto — the browser shrinks
+   proportionally to satisfy whichever bound is tighter, so no logo
+   (regardless of aspect ratio, e.g. PORES' very wide wordmark) ever gets
+   squashed the way a fixed height + max-width alone can distort it. */
+.center-block__logo {
+  max-height: 44px;
+  max-width: 100%;
+  width: auto;
+  height: auto;
 }
 
-.related-centers__grid a {
-  color: inherit;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  text-decoration-color: rgba(255,255,255,0.4);
-  transition: text-decoration-color 0.15s;
+/* CSSLab's wordmark is light gray/blue on transparent — invisible on
+   white, so it gets a dark backdrop instead (same fix as the reference
+   site's .dark-card). */
+.center-block--dark {
+  background: var(--c-dark);
+  border-color: var(--c-dark);
 }
 
-.related-centers__grid a:hover {
-  text-decoration-color: var(--c-white);
+/* Polarization Research Lab's wordmark is white-on-transparent — a
+   mid-gray backdrop (not navy) gives it enough contrast to read. */
+.center-block--light {
+  background: #bdbdbd;
+  border-color: #bdbdbd;
 }
+
+/* Andrea Mitchell Center and Warren Center marks are self-contained
+   seals with their own background baked in — render bigger, with less
+   padding, so their footprint still roughly matches their neighbors'. */
+.center-block--tight { padding: var(--space-150) var(--space-200); }
+.center-block__logo--lg { max-height: 88px; }
 
 /* =============================================================================
    INTERDISCIPLINARY HUB  (orbital)
@@ -366,7 +410,6 @@ img { max-width: 100%; height: auto; display: block; }
   line-height: 50.4px;
   letter-spacing: 0;
   color: var(--c-white);
-  max-width: 681px;
   margin-bottom: var(--space-400);   /* 32px */
 }
 
@@ -378,61 +421,53 @@ img { max-width: 100%; height: auto; display: block; }
   line-height: 22.75px;
   letter-spacing: 0;
   color: var(--c-white);
-  max-width: 859px;
   margin-bottom: var(--space-500);   /* 40px before list */
 }
 
-/* school-rows: 851×292, 7 rows each 40px */
-.school-list {
-  max-width: 851px;
+/* School logo grid — white crest tiles floating on the gradient, same
+   card pattern as the /grants repo's eligible-schools grid (a plain
+   list of names read as an afterthought against a rainbow background;
+   the actual school crests read as legitimacy/institutional weight). */
+.school-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-200);
   margin-bottom: var(--space-400);   /* 32px */
 }
 
-/* school-row: 851×40, bg=rgba(255,255,255,0.06), fill white op=0.1 */
-.school-list li {
-  height: 40px;
+@media (max-width: 900px) {
+  .school-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .school-grid { grid-template-columns: 1fr; }
 }
 
-.school-list__link {
+.school-block__link {
   display: flex;
   align-items: center;
-  gap: var(--space-300);
-  width: 100%;
+  justify-content: center;
   height: 100%;
-  padding-inline: var(--space-100);
-  background: rgba(255, 255, 255, 0.06);
-  text-decoration: none;
-  transition: background 0.15s;
+  min-height: 96px;
+  padding: var(--space-300) var(--space-200);
+  background: var(--c-white);
+  border: 1px solid rgba(13, 13, 12, 0.08);
+  transition: border-color 0.15s;
 }
 
-.school-list__link:hover {
-  background: rgba(255, 255, 255, 0.14);
+.school-block__link:hover { border-color: var(--c-red); }
+
+.school-block__logo {
+  max-height: 40px;
+  max-width: 100%;
+  width: auto;
+  height: auto;
 }
 
-/* school-row-n: Courier New 11px, fill white op=0.2, lh=13.2 */
-.school-list__num {
-  font-family: var(--f-mono);
-  font-size: 11px;
-  font-weight: 400;
-  line-height: 13.2px;
-  letter-spacing: 0;
-  color: rgba(255, 255, 255, 0.2);   /* Figma fill op=0.2 */
-  min-width: 28px;
-  flex-shrink: 0;
-}
-
-/* school-row-name: DM Sans Light 16px, fill white */
-.school-list__name {
-  font-family: var(--f-sans);
-  font-size: 16px;
-  font-weight: 300;
-  line-height: 19.2px;
-  letter-spacing: 0;
-  color: var(--c-white);
-  text-decoration: none;
-  transition: text-decoration-color 0.15s, opacity 0.15s;
-}
-
+/* Engineering and Penn Carey Law's lockups are noticeably taller/wider
+   respectively than the other five schools' at the shared height —
+   same adjustment as /grants' .school-block__logo modifiers. */
+.school-block__logo--seas { max-height: 56px; }
+.school-block__logo--law  { max-height: 32px; }
 
 /* funding note: matches orbital__lead — DM Sans Light 18px */
 .orbital__funding {
@@ -442,9 +477,84 @@ img { max-width: 100%; height: auto; display: block; }
   line-height: 22.75px;
   letter-spacing: 0;
   color: var(--c-white);
-  max-width: 851px;
-  opacity: 0.85;
 }
+
+/* =============================================================================
+   EXTERNAL PARTNERS
+   Purple block, white text — same surface language as .related-centers'
+   old treatment. Cards stay white so the partner logos still read
+   clearly against the purple background.
+   ============================================================================= */
+.partners {
+  background: var(--c-accent);
+  padding-block: var(--space-1000);
+}
+
+.partners__inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);             /* 24px heading -> lede, matches /grants' heading-to-body rhythm */
+}
+
+/* Sans-serif heading, semibold rather than the heaviest weight — matches
+   /grants' .rfp__title family/scale but pulled back from 700 to 600. */
+.partners__title {
+  font-family: var(--f-sans);
+  font-size: 40px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--c-white);
+}
+
+.partners__lede {
+  font-family: var(--f-sans);
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 25.2px;
+  color: var(--c-white);
+  margin-bottom: var(--space-300);   /* 24px before the cards */
+  /* No max-width: fills the full padded width so left/right space stays
+     equal, same fix as /grants' body-copy blocks. */
+}
+
+.partners__panel {
+  background: transparent;
+}
+
+.partners__grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-300);
+}
+
+.partner-card {
+  display: flex;
+  flex-direction: column;
+  width: 280px;
+}
+
+.partner-card__link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 108px;
+  padding: var(--space-300);
+  background: var(--c-white);
+  border: 1px solid rgba(13, 13, 12, 0.08);
+  text-decoration: none;
+  transition: border-color 0.15s;
+}
+
+.partner-card__link:hover { border-color: var(--c-red); }
+
+.partner-card__logo {
+  max-height: 40px;
+  max-width: 100%;
+  width: auto;
+  height: auto;
+}
+
 
 /* =============================================================================
    SUPPORTERS
@@ -544,6 +654,7 @@ img { max-width: 100%; height: auto; display: block; }
 /* Subscribe CTA: white rectangle; on hover the copy is knocked out to
    reveal the section's own gradient showing through the letterforms. */
 .newsletter__cta {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -552,6 +663,46 @@ img { max-width: 100%; height: auto; display: block; }
   height: 48px;
   padding-inline: var(--space-400);  /* 32px */
   background: var(--c-white);
+}
+
+/* Animated border trace on hover — a single line chases around the
+   button's perimeter via a rotating conic-gradient "comet," masked down
+   to a 2px ring. Static (no hidden layout shift) until hover triggers
+   both the fade-in and the rotation. */
+@property --cta-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.newsletter__cta::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  padding: 2px;
+  /* Solid for the first 40deg, then a smooth fade to transparent by
+     62deg — the leading edge stays crisp, the trailing end tapers into
+     nothing instead of cutting off abruptly. */
+  background: conic-gradient(from var(--cta-angle), var(--c-red) 0deg, var(--c-red) 40deg, transparent 62deg, transparent 360deg);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.newsletter__cta:hover::before {
+  /* One lap, then fades itself out and stays gone (forwards) — it
+     actually ends instead of sitting there statically for the rest of
+     the hover. Opacity lives in the keyframes (not a separate
+     transition) so the fade-out is part of the same timeline. */
+  animation: cta-trace 1.3s linear forwards;
+}
+
+@keyframes cta-trace {
+  0% { opacity: 1; --cta-angle: 0deg; }
+  85% { opacity: 1; --cta-angle: 360deg; }
+  100% { opacity: 0; --cta-angle: 360deg; }
 }
 
 .newsletter__cta-label {
