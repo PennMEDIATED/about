@@ -20,18 +20,13 @@
   /* ── Figma colour tokens ── */
   --c-bg:         #ffffff;
   --c-dark:       #0d0d0c;          /* rgb(13,13,12)   */
-  --c-separator:  #1e1e1e;          /* rgb(30,30,30)   */
   --c-light-bg:   #f8f7f4;          /* rgb(248,247,244)*/
   --c-accent:     #5533ee;          /* rgb(85,51,238)  */
   --c-red:        #f03d1f;          /* rgb(240,61,31)  */
   --c-gray:       #888680;          /* rgb(136,134,128)*/
-  --c-gray-dark:  #54534f;          /* rgb(84,83,79) — opaque body copy, ~8:1 on white. Backported
-                                        from /home per this section's own prior note: prefer this
-                                        over --c-gray for paragraph text now that we have some. */
   --c-white:      #ffffff;
-  --c-pale-orange: #fce4dc;         /* --c-red tinted ~12% onto white — matches /grants' callout boxes */
 
-  /* Paragraph+Background gradient (orbital overlay + newsletter bg)
+  /* Paragraph+Background gradient (orbital overlay)
      stop 0 = #5533ee, stop 81% = #df3611 (rgb 223,54,17)
      angle ≈ 150 deg based on Figma handle positions              */
   --c-gradient: linear-gradient(150deg, #5533ee 0%, #df3611 81%);
@@ -44,6 +39,45 @@
   /* ── Page layout ── */
   --max-w: 1440px;
   --pad-x: var(--space-1000);   /* 80px side padding — page-level rhythm */
+}
+
+/* =============================================================================
+   External Link Arrow Badge
+   Black circle + white arrow that signals "opens an external site." Used
+   on school/partner/center logo cards; host element needs position:
+   relative. On hover, the badge switches to a continuously sliding
+   purple-to-orange gradient (the brand gradient's own colors) rather
+   than a flat color swap — one consistent motion effect across every
+   section instead of a different static hover color per section.
+   ============================================================================= */
+.card-arrow {
+  position: absolute;
+  top: var(--space-100);
+  right: var(--space-100);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--c-dark);
+  color: var(--c-white);
+  font-size: 10px;
+  line-height: 1;
+  transition: transform 0.2s ease;
+  pointer-events: none;
+}
+@keyframes card-arrow-slide {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+a:hover .card-arrow {
+  transform: scale(1.15) translate(2px, -2px);
+  background: linear-gradient(100deg, var(--c-accent), var(--c-red), var(--c-accent));
+  background-size: 220% 100%;
+  animation: card-arrow-slide 1.2s linear infinite;
 }
 
 /* =============================================================================
@@ -71,14 +105,11 @@ img { max-width: 100%; height: auto; display: block; }
 /* =============================================================================
    Shared inner container
    ============================================================================= */
-.nav__inner,
 .mission__inner,
 .related-centers__inner,
 .orbital__inner,
 .partners__inner,
-.supporters__inner,
-.newsletter__inner,
-.footer__inner {
+.stats__inner {
   width: 100%;
   max-width: var(--max-w);
   margin-inline: auto;
@@ -86,125 +117,100 @@ img { max-width: 100%; height: auto; display: block; }
 }
 
 /* =============================================================================
-   NAV
-   Figma: 1440×61, fill rgb(13,13,12), BACKGROUND_BLUR radius=24
+   Eyebrow label
+   Small uppercase kicker above a section heading — editorial wayfinding
+   cue. Used once, above Mission Statement.
    ============================================================================= */
-.nav {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  height: 61px;
-  background: var(--c-dark);
-  backdrop-filter: blur(24px);             /* Figma BACKGROUND_BLUR r=24 */
-  -webkit-backdrop-filter: blur(24px);
-}
-
-.nav__inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 100%;
-}
-
-/* Logo */
-.nav__logo {
-  display: flex;
-  align-items: center;
-  color: var(--c-white);
-}
-
-.nav__logo-img {
-  display: block;
-  width: 158px;
-  height: 32px;
-}
-
-/* Nav links — DM Sans SemiBold 20px, lh=17.25, ls=0 */
-.nav__links {
-  display: flex;
-  align-items: center;
-  gap: var(--space-400);  /* 32px — proximity grouping */
-}
-
-.nav__links a {
+.eyebrow {
   font-family: var(--f-sans);
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 17.25px;
-  letter-spacing: 0;
-  color: var(--c-white);
-  transition: opacity 0.15s;
-}
-
-.nav__links a:hover { opacity: 0.7; }
-
-/* "About" is red in the nav — Figma fill rgb(240,61,31) */
-.nav__link--active { color: var(--c-red) !important; }
-
-/* =============================================================================
-   HERO
-   Figma: page-header 1434×293 (includes 61px nav), hero area ≈ 232px
-   Background image: pseudo-before frame (imageRef 0f6332de…)
-   Title: EB Garamond SemiBold 72px, fill rgb(10,10,10), ls=-0.72, lh=73.44, CENTER
-   ============================================================================= */
-.hero {
-  position: relative;
-  margin-top: 50px;
-  height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  background-image: url(assets/hero-bg.png);
-  background-size: cover;
-  background-position: center top;
-  background-repeat: no-repeat;
-}
-
-/* Subtle white wash so title remains legible over any image content */
-.hero::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(255, 255, 255, 0.35);
-  pointer-events: none;
-}
-
-.hero__title {
-  position: relative;
-  z-index: 1;
-  font-family: var(--f-serif);
-  font-size: 72px;
-  font-weight: 600;
-  line-height: 73.44px;
-  letter-spacing: -0.72px;        /* Figma ls=-0.72 */
-  color: #0a0a0a;                  /* rgb(10,10,10) */
-  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--c-red);
+  margin-bottom: var(--space-150);
 }
 
 /* =============================================================================
-   SEPARATOR
-   Figma: Rectangle 8, 1467×84, fill rgb(30,30,30)
+   Scroll-triggered reveal
+   Progressive enhancement: the opacity/transform rule only applies once
+   the page's own script has confirmed it can run (js-reveal-ready on
+   <html>), so a page with JS disabled or blocked never gets stuck with
+   invisible content — everything just renders normally instead.
    ============================================================================= */
-.separator {
-  height: 84px;
-  background: var(--c-separator);
+.js-reveal-ready .reveal {
+  opacity: 0;
+  transform: translateY(56px) scale(0.97);
+  transition: opacity 0.9s ease, transform 0.9s ease;
 }
+.js-reveal-ready .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Grid tiles and stat items get their own staggered reveal, cued off
+   their parent section's .is-visible class — each item fades/lifts in a
+   beat after the one before it instead of the whole grid appearing as a
+   single flat block, so the reveal reads as more deliberate/noticeable. */
+.js-reveal-ready .stats__item,
+.js-reveal-ready .school-block,
+.js-reveal-ready .center-block,
+.js-reveal-ready .partner-card {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.is-visible .stats__item,
+.reveal.is-visible .school-block,
+.reveal.is-visible .center-block,
+.reveal.is-visible .partner-card {
+  opacity: 1;
+  transform: none;
+}
+.stats__item:nth-child(1),  .school-block:nth-child(1),  .center-block:nth-child(1),  .partner-card:nth-child(1)  { transition-delay: 0.05s; }
+.stats__item:nth-child(2),  .school-block:nth-child(2),  .center-block:nth-child(2),  .partner-card:nth-child(2)  { transition-delay: 0.11s; }
+.stats__item:nth-child(3),  .school-block:nth-child(3),  .center-block:nth-child(3),  .partner-card:nth-child(3)  { transition-delay: 0.17s; }
+.school-block:nth-child(4),  .center-block:nth-child(4)  { transition-delay: 0.23s; }
+.school-block:nth-child(5),  .center-block:nth-child(5)  { transition-delay: 0.29s; }
+.school-block:nth-child(6),  .center-block:nth-child(6)  { transition-delay: 0.35s; }
+.school-block:nth-child(7),  .center-block:nth-child(7)  { transition-delay: 0.41s; }
+.school-block:nth-child(8),  .center-block:nth-child(8)  { transition-delay: 0.47s; }
+.center-block:nth-child(9)  { transition-delay: 0.53s; }
+.center-block:nth-child(10) { transition-delay: 0.59s; }
 
 /* =============================================================================
    MISSION STATEMENT  (chapter)
    Figma: 1434×580, fills transparent (opacity=0) → inherits white from parent
    ============================================================================= */
 .mission {
+  position: relative;
   background: var(--c-bg);
   padding-top: 20px;
-  padding-bottom: var(--space-1000); /* 80px — page-level spacing */
+  padding-bottom: var(--space-1000); /* 80px — page-level spacing, matches Orbital/Partners/Related Centers */
+}
+
+
+/* Tighter, symmetric padding for the standalone GNI/Jameson quote
+   sections — the standard 20/80 split (tuned for Mission Statement's
+   heading + prose) left way too much empty space around a single short
+   quote. */
+.mission--tight {
+  padding-top: 45px;
+  padding-bottom: 45px;
 }
 
 .mission__inner {
   display: flex;
   flex-direction: column;
   gap: 0;
+}
+
+/* Body copy + quote box side by side, quote box to the right */
+.mission__row {
+  display: flex;
+  align-items: center;     /* vertically centers the quote box against the body copy */
+  gap: var(--space-600);   /* 48px between body copy and quote box */
+  flex-wrap: wrap;         /* stacks on narrow viewports */
 }
 
 /* ch-title: EB Garamond SemiBold 48px, fill rgb(85,51,238), ls=0, lh=50.4 */
@@ -223,9 +229,7 @@ img { max-width: 100%; height: auto; display: block; }
   display: flex;
   flex-direction: column;
   gap: var(--space-300);           /* 24px between paragraphs — rhythm */
-  /* No max-width: fills the section's full padded width so left/right
-     space stays equal, and matches .mission__title's left edge above it
-     instead of insetting from a centered narrower column. */
+  flex: 1 1 480px;                 /* takes remaining row width next to the quote box */
 }
 
 .mission__body p {
@@ -237,8 +241,18 @@ img { max-width: 100%; height: auto; display: block; }
   color: var(--c-dark);
 }
 
-.mission__body p:first-child {
+/* First (bold) paragraph — runs the section's full original width, above
+   the row, rather than sharing row space with the quote box. Only the
+   second (unbolded) paragraph sits in .mission__row and vertically
+   centers against the quote. */
+.mission__lead {
+  font-family: var(--f-sans);
+  font-size: 20px;
   font-weight: 600;
+  line-height: 25.2px;
+  letter-spacing: 0;
+  color: var(--c-dark);
+  margin-bottom: var(--space-300);   /* 24px — same rhythm as the old .mission__body gap */
 }
 
 /* anno-quote-text: EB Garamond Regular 24px, fill rgb(13,13,12), lh=23.25 */
@@ -248,9 +262,33 @@ img { max-width: 100%; height: auto; display: block; }
 }
 
 .mission__quote blockquote {
+  position: relative;
   padding-left: var(--space-400);
   border-left: 2px solid var(--c-red);
   margin-bottom: var(--space-200);
+}
+
+/* Oversized decorative quotation mark — gives the pull-quote real
+   editorial scale instead of relying on the accent bar alone. Sits
+   behind the quote text (z-index/negative) at low opacity so it reads as
+   texture, not a second piece of content. */
+.mission__quote blockquote::before {
+  content: '\201C';
+  position: absolute;
+  top: -0.35em;
+  left: var(--space-300);
+  z-index: 0;
+  font-family: var(--f-serif);
+  font-size: 5em;
+  line-height: 1;
+  color: var(--c-red);
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+.mission__quote blockquote p {
+  position: relative;
+  z-index: 1;
 }
 
 .mission__quote blockquote p {
@@ -274,16 +312,237 @@ img { max-width: 100%; height: auto; display: block; }
   padding-left: var(--space-400);
 }
 
+/* ─── Quote box variant ───
+   No background card — just the red accent bar as a left border, with
+   smaller/italic text. Used two ways: beside the Mission Statement body
+   copy (inside .mission__row, a row-direction flex context — the width
+   there is set via `flex` so it holds a fixed size next to the text),
+   and standalone/centered for the GNI and Jameson quotes (inside a plain
+   .mission__inner--center column, where `width` + auto margins center
+   it, since flex-basis in a column container would size height instead
+   of width). */
+.mission__quote--box {
+  max-width: none;
+  width: 400px;
+  margin-top: 0;
+  margin-inline: auto;   /* centers it when it's the sole item in a column context */
+}
+
+.mission__row .mission__quote--box {
+  flex: 0 0 400px;
+  margin-inline: 0;      /* positioned by the row layout instead, not centered */
+}
+
+/* GNI/Jameson (standalone, centered quotes) get their own fixed width,
+   independent of the Gutmann quote's 1120px breakpoint below — otherwise
+   they'd shrink from a wide centered box down to the narrow 400px
+   side-by-side size once the screen crosses 1120px, which only makes
+   sense for the Gutmann quote's row layout. */
+.mission__inner--center .mission__quote--box {
+  width: clamp(280px, 75%, 860px);   /* matches the Gutmann quote's stacked width exactly */
+  max-width: 860px;
+}
+
+.mission__quote--box blockquote {
+  position: relative;
+  border-left: 4px solid #FF4825D4;   /* accent bar — spans just the quote text, not the attribution below */
+  padding-left: var(--space-300);
+  margin-bottom: var(--space-150);
+}
+
+.mission__quote--box blockquote::before {
+  content: '\201C';
+  position: absolute;
+  top: -0.4em;
+  left: var(--space-250);
+  z-index: 0;
+  font-family: var(--f-serif);
+  font-size: 3.4em;
+  line-height: 1;
+  color: var(--c-red);
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+.mission__quote--box blockquote p {
+  position: relative;
+  z-index: 1;
+}
+
+.mission__quote--box blockquote p {
+  font-size: 19px;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.mission__quote--box figcaption {
+  padding-left: var(--space-300);   /* aligns with the quote text above, without its own bar */
+  font-size: 13px;
+}
+
+/* The row actually wraps around ~1103px (not the ~928px math above would
+   suggest — the flex-basis values are minimums, not hard caps, so the
+   row holds together a bit longer). Breakpoint bumped to 1120px so the
+   centered/widened treatment kicks in exactly when wrapping happens,
+   instead of leaving a gap where it's wrapped but still left-aligned. */
+@media (max-width: 1120px) {
+  .mission__quote--box {
+    width: clamp(280px, 75%, 860px);
+    max-width: 860px;
+    margin-inline: auto;   /* centers the box on its own wrapped line */
+  }
+  /* Same specificity as the row's own ".mission__row .mission__quote--box
+     { margin-inline: 0; }" rule above, so this (later in the cascade)
+     wins once wrapped — otherwise that more-specific rule kept pinning
+     the box to the left even after it dropped to its own line. */
+  .mission__row .mission__quote--box {
+    flex-basis: clamp(280px, 75%, 860px);
+    margin-inline: auto;
+  }
+}
+
+/* Centers content within a standalone quote section (GNI/Jameson), where
+   .mission__inner has no adjacent body copy to sit beside — both
+   horizontally (align-items) and vertically (justify-content, using the
+   min-height below to give it room to center within). */
+.mission__inner--center {
+  align-items: center;
+  justify-content: center;
+  min-height: 80px;
+}
+
+/* =============================================================================
+   STATS  (Section)
+   "At a glance" strip — pulls a few numbers already implied by the Mission
+   and Orbital copy (combined investment, school count) into a scannable,
+   large-numeral band between Mission and Orbital.
+   ============================================================================= */
+.stats {
+  position: relative;
+  background: var(--c-light-bg);
+  padding-block: var(--space-800);
+  border-top: 1px solid rgba(13, 13, 12, 0.08);
+  border-bottom: 1px solid rgba(13, 13, 12, 0.08);
+}
+
+/* Thin gradient bar across the very top of the strip — the same brand
+   gradient used in the Orbital section, so the panel reads as tied to
+   the rest of the page's identity rather than a plain gray band. */
+.stats::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--c-gradient);
+}
+
+/* Centered with a fixed gap (not space-between) so the three stats read
+   as one grouped unit — space-between let them drift apart as separate,
+   unrelated islands at wider viewports. Vertical dividers between items
+   reinforce that same "one strip" reading. */
+.stats__inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+  gap: var(--space-800);
+}
+
+.stats__item {
+  flex: 0 1 220px;
+  text-align: center;
+  padding-left: var(--space-800);
+}
+
+.stats__item:first-child {
+  padding-left: 0;
+}
+
+.stats__item + .stats__item {
+  border-left: 1px solid rgba(13, 13, 12, 0.12);
+}
+
+/* Numerals rendered through the brand gradient (same technique as a
+   knocked-out CTA label) instead of a flat color — gives the strip's
+   focal element some of the same visual richness as the gradient
+   section, rather than sitting flat against the light background. */
+.stats__value {
+  font-family: var(--f-serif);
+  font-size: 56px;
+  font-weight: 600;
+  line-height: 1;
+  margin-bottom: var(--space-150);
+  background: var(--c-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.stats__label {
+  font-family: var(--f-sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-gray);
+}
+
+@media (max-width: 640px) {
+  .stats__value { font-size: 44px; }
+  .stats__item { flex: 1 1 100%; padding-left: 0; border-left: none; padding-top: var(--space-400); }
+  .stats__item:first-child { padding-top: 0; }
+  .stats__item + .stats__item { border-left: none; border-top: 1px solid rgba(13, 13, 12, 0.12); }
+}
+
+/* Scroll-down cue — sits in its own plain-white strip between the Stats
+   panel and Orbital, standing in for the top of the gradient section
+   before it's scrolled into view. Reuses the same dark-circle language
+   as .card-arrow for brand consistency, with a slow bounce so it reads
+   as an invitation rather than noise. Fades out once the gradient
+   (Orbital) section actually comes into view — toggled continuously by
+   its own IntersectionObserver, via the .scroll-hint--hidden class. */
+.scroll-hint-wrap {
+  display: flex;
+  justify-content: center;
+  padding-block: var(--space-300);
+  background: var(--c-white);
+}
+.scroll-hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(13, 13, 12, 0.15);
+  color: var(--c-dark);
+  font-size: 16px;
+  animation: scroll-hint-bounce 2.2s ease-in-out infinite;
+  transition: border-color 0.15s, color 0.15s, opacity 0.4s ease;
+}
+.scroll-hint:hover {
+  border-color: var(--c-red);
+  color: var(--c-red);
+  animation-play-state: paused;
+}
+.scroll-hint--hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+@keyframes scroll-hint-bounce {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(8px); }
+}
+
 /* =============================================================================
    RELATED CENTERS AT PENN  (Section)
-   Black-on-white block, same heading/lede format and logo-block-grid
-   pattern as .partners — flipped with .partners' old white-bg/black-text
-   treatment; .partners now takes this section's old purple/white
-   treatment. Keep this note if either swaps again so the pairing stays
-   intentional, not accidental drift.
+   Solid red-orange band background — full section, including the card
+   grid, matching the Orbital/Partners color-block treatment.
    ============================================================================= */
 .related-centers {
-  background: var(--c-bg);
+  background: var(--c-red);
   padding-block: var(--space-1000);  /* 80px */
   margin-bottom: var(--space-1000);
 }
@@ -300,7 +559,7 @@ img { max-width: 100%; height: auto; display: block; }
   font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.15;
-  color: var(--c-dark);
+  color: var(--c-white);
 }
 
 .related-centers__lede {
@@ -308,7 +567,7 @@ img { max-width: 100%; height: auto; display: block; }
   font-size: 20px;
   font-weight: 300;
   line-height: 25.2px;
-  color: var(--c-dark);
+  color: var(--c-white);
   margin-bottom: var(--space-300);   /* 24px before the grid */
 }
 
@@ -316,8 +575,6 @@ img { max-width: 100%; height: auto; display: block; }
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: var(--space-200);
-  background: var(--c-pale-orange);
-  padding: var(--space-300);
 }
 
 @media (max-width: 900px) {
@@ -327,50 +584,38 @@ img { max-width: 100%; height: auto; display: block; }
   .related-centers__grid { grid-template-columns: 1fr; }
 }
 
+/* 4:3 tile, sized off its own width (aspect-ratio) — same reasoning as
+   .school-block__link above. Since height tracks width rather than a
+   fixed px value, --tight's smaller padding no longer needs to be offset
+   by anything to keep it the same height as its neighbors; it's already
+   guaranteed by sharing the same grid column width. */
 .center-block {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 108px;
+  aspect-ratio: 4 / 3;
   padding: var(--space-300) var(--space-200);
   background: var(--c-white);
   border: 1px solid rgba(13, 13, 12, 0.08);
-  transition: border-color 0.15s;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
 }
 
-.center-block:hover { border-color: var(--c-red); }
+.center-block:hover {
+  box-shadow: 0 12px 24px rgba(13, 13, 12, 0.16);
+  transform: translateY(-4px);
+}
 
 /* max-height + max-width with height/width auto — the browser shrinks
    proportionally to satisfy whichever bound is tighter, so no logo
    (regardless of aspect ratio, e.g. PORES' very wide wordmark) ever gets
    squashed the way a fixed height + max-width alone can distort it. */
 .center-block__logo {
-  max-height: 44px;
+  max-height: 128px;
   max-width: 100%;
   width: auto;
   height: auto;
 }
-
-/* CSSLab's wordmark is light gray/blue on transparent — invisible on
-   white, so it gets a dark backdrop instead (same fix as the reference
-   site's .dark-card). */
-.center-block--dark {
-  background: var(--c-dark);
-  border-color: var(--c-dark);
-}
-
-/* Polarization Research Lab's wordmark is white-on-transparent — a
-   mid-gray backdrop (not navy) gives it enough contrast to read. */
-.center-block--light {
-  background: #bdbdbd;
-  border-color: #bdbdbd;
-}
-
-/* Andrea Mitchell Center and Warren Center marks are self-contained
-   seals with their own background baked in — render bigger, with less
-   padding, so their footprint still roughly matches their neighbors'. */
-.center-block--tight { padding: var(--space-150) var(--space-200); }
-.center-block__logo--lg { max-height: 88px; }
 
 /* =============================================================================
    INTERDISCIPLINARY HUB  (orbital)
@@ -425,9 +670,7 @@ img { max-width: 100%; height: auto; display: block; }
 }
 
 /* School logo grid — white crest tiles floating on the gradient, same
-   card pattern as the /grants repo's eligible-schools grid (a plain
-   list of names read as an afterthought against a rainbow background;
-   the actual school crests read as legitimacy/institutional weight). */
+   card pattern as the /grants repo's eligible-schools grid. */
 .school-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -442,48 +685,39 @@ img { max-width: 100%; height: auto; display: block; }
   .school-grid { grid-template-columns: 1fr; }
 }
 
+/* 4:3 tile, sized off its own width (aspect-ratio) rather than a fixed
+   px height — stays 4:3 at every grid breakpoint (4/2/1 columns) since
+   height always tracks whatever the column width happens to be, and
+   every tile in the section shares that same column width, so they stay
+   the same height as each other automatically too. */
 .school-block__link {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
-  min-height: 96px;
+  aspect-ratio: 4 / 3;
   padding: var(--space-300) var(--space-200);
   background: var(--c-white);
   border: 1px solid rgba(13, 13, 12, 0.08);
-  transition: border-color 0.15s;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
 }
 
-.school-block__link:hover { border-color: var(--c-red); }
+.school-block__link:hover {
+  box-shadow: 0 12px 24px rgba(13, 13, 12, 0.16);
+  transform: translateY(-4px);
+}
 
 .school-block__logo {
-  max-height: 40px;
+  max-height: 128px;
   max-width: 100%;
   width: auto;
   height: auto;
 }
 
-/* Engineering and Penn Carey Law's lockups are noticeably taller/wider
-   respectively than the other five schools' at the shared height —
-   same adjustment as /grants' .school-block__logo modifiers. */
-.school-block__logo--seas { max-height: 56px; }
-.school-block__logo--law  { max-height: 32px; }
-
-/* funding note: matches orbital__lead — DM Sans Light 18px */
-.orbital__funding {
-  font-family: var(--f-sans);
-  font-size: 18px;
-  font-weight: 300;
-  line-height: 22.75px;
-  letter-spacing: 0;
-  color: var(--c-white);
-}
-
 /* =============================================================================
    EXTERNAL PARTNERS
-   Purple block, white text — same surface language as .related-centers'
-   old treatment. Cards stay white so the partner logos still read
-   clearly against the purple background.
+   Purple block, white text — cards stay white so the partner logos still
+   read clearly against the purple background.
    ============================================================================= */
 .partners {
   background: var(--c-accent);
@@ -525,315 +759,41 @@ img { max-width: 100%; height: auto; display: block; }
 .partners__grid {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-300);
+  gap: var(--space-200);
 }
 
+/* Same width as one column of the 4-column school-grid/related-centers
+   grid (same container max-width/padding, same gap value), so these
+   tiles come out the exact same size as the other sections' — without
+   actually joining a 4-column grid, which would reserve two empty
+   trailing columns since there are only 2 partner cards. */
 .partner-card {
   display: flex;
   flex-direction: column;
-  width: 280px;
+  width: calc((100% - 3 * var(--space-200)) / 4);
 }
 
 .partner-card__link {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 108px;
+  aspect-ratio: 4 / 3;
   padding: var(--space-300);
   background: var(--c-white);
   border: 1px solid rgba(13, 13, 12, 0.08);
   text-decoration: none;
-  transition: border-color 0.15s;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
 }
 
-.partner-card__link:hover { border-color: var(--c-red); }
+.partner-card__link:hover {
+  box-shadow: 0 12px 24px rgba(13, 13, 12, 0.16);
+  transform: translateY(-4px);
+}
 
 .partner-card__logo {
-  max-height: 40px;
+  max-height: 128px;
   max-width: 100%;
   width: auto;
   height: auto;
 }
-
-
-/* =============================================================================
-   SUPPORTERS
-   Figma: SUPPORTERS frame 1440×97, bg white
-   "Supported by": DM Sans Bold 9px, fill rgb(13,13,12), ls=1.8, lh=13.5
-   Knight logo: 103×33; UPenn logo: 98×55
-   ============================================================================= */
-.supporters {
-  background: var(--c-white);
-  min-height: 180px;
-  display: flex;
-  align-items: center;
-  padding-block: var(--space-300);   /* breathing room when logos wrap */
-}
-
-.supporters__inner {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  row-gap: var(--space-300);
-  gap: var(--space-500);             /* 40px — group label with logos */
-}
-
-.supporters__label {
-  font-family: var(--f-sans);
-  font-size: 24px;
-  font-weight: 700;
-  line-height: 30px;
-  letter-spacing: 1.8px;            /* Figma ls=1.8 */
-  color: var(--c-dark);
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.supporters__logo-link {
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-  opacity: 1;
-  transition: opacity 0.15s;
-}
-
-.supporters__logo-link:hover { opacity: 0.75; }
-
-.supporters__logo--knight {
-  height: 65px;
-  width: auto;
-}
-
-.supporters__logo--upenn {
-  height: 120px;
-  width: auto;
-}
-
-/* =============================================================================
-   NEWSLETTER
-   Figma: inside Paragraph+Background (gradient overlay frame, same gradient
-   as orbital's Paragraph+Background): 150deg #5533ee 0% → #df3611 81%
-   "Stay in the loop": EB Garamond Bold 30px, fill white, ls=-0.544, lh=40.8
-   desc: DM Sans Light 20px, fill white, lh=19.2
-   input: 260×39, fill white; button: 113×39, fill rgb(240,61,31)
-   ============================================================================= */
-.newsletter {
-  background: var(--c-gradient);     /* #5533ee → #df3611 at 150deg */
-  padding-block: var(--space-800);   /* 64px */
-}
-
-.newsletter__inner {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: flex-start;
-  row-gap: var(--space-400);
-  column-gap: var(--space-800);      /* 64px — separate copy from CTA */
-}
-
-.newsletter__title {
-  font-family: var(--f-serif);
-  font-size: 30px;
-  font-weight: 700;
-  line-height: 40.8px;
-  letter-spacing: -0.544px;          /* Figma ls=-0.544 */
-  color: var(--c-white);
-  margin-bottom: var(--space-050);   /* 4px — tight coupling in component */
-}
-
-.newsletter__desc {
-  font-family: var(--f-sans);
-  font-size: 20px;
-  font-weight: 300;
-  line-height: 19.2px;
-  letter-spacing: 0;
-  color: var(--c-white);
-  /* no max-width: renders on one line whenever there's room, wraps if not */
-}
-
-/* Subscribe CTA: white rectangle; on hover the copy is knocked out to
-   reveal the section's own gradient showing through the letterforms. */
-.newsletter__cta {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  align-self: flex-end;
-  flex-shrink: 0;
-  height: 48px;
-  padding-inline: var(--space-400);  /* 32px */
-  background: var(--c-white);
-}
-
-/* Animated border trace on hover — a single line chases around the
-   button's perimeter via a rotating conic-gradient "comet," masked down
-   to a 2px ring. Static (no hidden layout shift) until hover triggers
-   both the fade-in and the rotation. */
-@property --cta-angle {
-  syntax: '<angle>';
-  initial-value: 0deg;
-  inherits: false;
-}
-
-.newsletter__cta::before {
-  content: '';
-  position: absolute;
-  inset: -2px;
-  padding: 2px;
-  /* Solid for the first 40deg, then a smooth fade to transparent by
-     62deg — the leading edge stays crisp, the trailing end tapers into
-     nothing instead of cutting off abruptly. */
-  background: conic-gradient(from var(--cta-angle), var(--c-red) 0deg, var(--c-red) 40deg, transparent 62deg, transparent 360deg);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.newsletter__cta:hover::before {
-  /* One lap, then fades itself out and stays gone (forwards) — it
-     actually ends instead of sitting there statically for the rest of
-     the hover. Opacity lives in the keyframes (not a separate
-     transition) so the fade-out is part of the same timeline. */
-  animation: cta-trace 1.3s linear forwards;
-}
-
-@keyframes cta-trace {
-  0% { opacity: 1; --cta-angle: 0deg; }
-  85% { opacity: 1; --cta-angle: 360deg; }
-  100% { opacity: 0; --cta-angle: 360deg; }
-}
-
-.newsletter__cta-label {
-  font-family: var(--f-sans);
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.24px;           /* Figma ls=0.24 */
-  color: var(--c-dark);
-}
-
-.newsletter__cta:hover .newsletter__cta-label {
-  background: var(--c-gradient);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-}
-
-/* =============================================================================
-   FOOTER
-   Figma: footer frame 1440×295, bg rgb(13,13,12)
-   ============================================================================= */
-.footer {
-  background: var(--c-dark);
-  padding-block: var(--space-800);   /* 64px */
-}
-
-.footer__inner {
-  display: flex;
-  gap: var(--space-800);             /* 64px between brand and nav grid */
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
-/* ── Brand column ── */
-.footer__brand {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-200);             /* 16px between brand elements */
-  max-width: 484px;
-}
-
-.footer__logo {
-  display: flex;
-  align-items: center;
-  color: var(--c-white);
-}
-
-.footer__logo-img {
-  display: block;
-  width: 222px;
-  height: 45px;
-}
-
-/* p: DM Sans Light 12.8px, fill white, lh=21.76 */
-.footer__tagline {
-  font-family: var(--f-sans);
-  font-size: 12.8px;
-  font-weight: 300;
-  line-height: 21.76px;
-  letter-spacing: 0;
-  color: var(--c-white);
-  max-width: 268px;
-}
-
-/* a: DM Sans Regular 12.8px, fill rgb(240,61,31), lh=19.2 */
-.footer__email {
-  font-family: var(--f-sans);
-  font-size: 12.8px;
-  font-weight: 400;
-  line-height: 19.2px;
-  letter-spacing: 0;
-  color: var(--c-red);
-  transition: opacity 0.15s;
-}
-
-.footer__email:hover { opacity: 0.8; }
-
-/* Social icons — gap space.200 (16px) */
-.footer__social {
-  display: flex;
-  align-items: center;
-  gap: var(--space-200);             /* 16px — small component gap */
-  margin-top: var(--space-100);
-}
-
-.footer__social-link {
-  display: flex;
-  align-items: center;
-  color: var(--c-white);
-  transition: opacity 0.15s;
-}
-
-.footer__social-link:hover { opacity: 0.7; }
-
-/* ── Nav columns ── */
-.footer__nav {
-  display: flex;
-  gap: var(--space-400);             /* 32px between columns */
-  align-items: flex-start;
-}
-
-.footer__nav-col { min-width: 170px; }
-
-/* h4: DM Sans Bold 9px, fill white, ls=1.8, lh=13.5 */
-.footer__nav-heading {
-  font-family: var(--f-sans);
-  font-size: 9px;
-  font-weight: 700;
-  line-height: 13.5px;
-  letter-spacing: 1.8px;            /* Figma ls=1.8 */
-  color: var(--c-white);
-  text-transform: uppercase;
-  margin-bottom: var(--space-200);  /* 16px */
-}
-
-/* ul links: DM Sans Light 12.8px, fill white, lh=19.2 */
-.footer__nav-col ul {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-200);            /* 16px between links — rhythm */
-}
-
-.footer__nav-col a {
-  font-family: var(--f-sans);
-  font-size: 12.8px;
-  font-weight: 300;
-  line-height: 19.2px;
-  letter-spacing: 0;
-  color: rgba(255, 255, 255, 0.85);
-  transition: color 0.15s;
-}
-
-.footer__nav-col a:hover { color: var(--c-white); }
