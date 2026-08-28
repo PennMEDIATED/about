@@ -1,12 +1,23 @@
 # Penn MEDIATED — About
 
-The About page for the [Center on Media, Technology and Democracy](https://infodem.upenn.edu). Static HTML/CSS, no build step. Live at https://pennmediated.github.io/about/
+The About page for the [Center on Media, Technology and Democracy](https://infodem.upenn.edu). Static HTML/CSS, no build step. Deployed directly to https://infodem.upenn.edu/about/ — see "Deployment" below.
 
 Same conventions as the [`home`](https://github.com/PennMEDIATED/home) and [`grants`](https://github.com/PennMEDIATED/grants) repos — shared spacing tokens, brand colors, and fonts. This page doesn't currently include the "Subscribe Here" newsletter/supporters block that `home` and `grants` share with each other.
 
 - `index.html` — page markup
 - `styles.css` — all styling (design tokens live at the top in `:root`)
 - `assets/` — images and logos
+
+## Deployment
+
+This repo deploys straight to the live site — no GitHub Pages hosting step, no WordPress iframe embed.
+
+- A clone of this repo lives on the department's web server (eniac) at the path WordPress resolves `/about/` to. The server's `.htaccess` defers to real files/directories on disk before handing a request to WordPress, so this repo's own files are what actually serve `https://infodem.upenn.edu/about/` — there's no WordPress Page involved at that URL anymore.
+- A cron job on that server runs `git pull` every minute using a read-only GitHub deploy key, so pushing a change to `main` reaches the live site within about a minute.
+- To undo a live mistake: `git revert` the bad commit and push it, same as any other change. **Don't** `git reset --hard` + force-push — the server's cron job expects a normal fast-forward `git pull`, and rewritten history will make it fail instead of quietly applying the fix.
+- The server only ever pulls; it never pushes back to GitHub. Edits should always originate here (in GitHub), not by hand-editing files directly on the server — a direct edit on the server can conflict with the next automatic pull.
+
+Full setup process (SSH access, deploy keys, cron) is documented in `eniac-github-ssh-setup.md` at the top level of the `Website` folder — that's the reference if you're setting this up for another repo or onboarding someone new to it.
 
 ## Style guide (shared across `about` and `home`)
 
@@ -71,7 +82,7 @@ This repo doesn't currently define `--c-gray-dark` or `--c-pale-orange` — both
 - **Stats strip** (`#stats-section` / `.stats`): a light-gray "at a glance" band between Mission and Orbital — three `.stats__item`s, each a large gradient-clipped numeral (`.stats__value`) over a small uppercase label (`.stats__label`). Numerals count up from 0 via `animateCount()` (in the page's inline `<script>`) when the strip scrolls into view, reading `data-target`/`data-prefix`/`data-suffix` off the markup; the static text is already the correct final value, so this is a pure enhancement that degrades safely if JS doesn't run.
 - **Scroll-hint arrow** (`.scroll-hint-wrap` / `.scroll-hint`): a bouncing circular arrow in the plain white gap between the Stats strip and Orbital, inviting the user to keep scrolling. Links to `#orbital-section` (the `<section>` itself, not the heading, so the section's own top padding/gradient isn't scrolled past). Fades out once Orbital scrolls into view, via `.scroll-hint--hidden`, toggled by the same observer that drives Orbital's reveal.
 - **Decorative pull-quote marks**: an oversized, low-opacity serif `"` rendered via `::before` behind each blockquote (`.mission__quote blockquote::before` and the `--box` variant), for editorial scale beyond the accent bar alone.
-- **Scroll-triggered reveal**: sections carry a `.reveal` class; once the page's script confirms it can run (`js-reveal-ready` added to `<html>`), each fades/lifts in the first time it scrolls into view. Most sections are **one-shot** (reveal once, then stay visible even scrolling back up). Orbital, External Partners, and Related Centers additionally carry `.reveal--toggle`, so those sections — and their child tiles (`.school-block`/`.partner-card`/`.center-block`, staggered via `nth-child` transition-delays) — continuously fade back out and back in as you scroll past them in either direction. Two separate `IntersectionObserver` instances in the inline `<script>` drive the two behaviors; a no-JS fallback marks everything visible immediately. This system does **not** account for the page being embedded in a cross-origin iframe (e.g. WordPress) — `IntersectionObserver`'s implicit root is the containing document's own viewport, which behaves differently inside an auto-resizing iframe. That's a known open question, deliberately not solved here yet.
+- **Scroll-triggered reveal**: sections carry a `.reveal` class; once the page's script confirms it can run (`js-reveal-ready` added to `<html>`), each fades/lifts in the first time it scrolls into view. Most sections are **one-shot** (reveal once, then stay visible even scrolling back up). Orbital, External Partners, and Related Centers additionally carry `.reveal--toggle`, so those sections — and their child tiles (`.school-block`/`.partner-card`/`.center-block`, staggered via `nth-child` transition-delays) — continuously fade back out and back in as you scroll past them in either direction. Two separate `IntersectionObserver` instances in the inline `<script>` drive the two behaviors; a no-JS fallback marks everything visible immediately. This system does **not** account for the page being embedded in a cross-origin iframe (e.g. WordPress) — `IntersectionObserver`'s implicit root is the containing document's own viewport, which behaves differently inside an auto-resizing iframe. That's a known open question, deliberately not solved here yet. The entrance itself animates the standalone `translate` property, not `transform` — the tiles' own hover lift uses `transform: translateY(-4px)`, and having the reveal also drive `transform` meant its more specific rule silently overrode the hover transition's duration too (0.6–0.9s instead of the intended fast 0.15s), making hover feel sluggish even long after the reveal had finished. `translate` and `transform` transition independently, so splitting them fixes that. Also uses a `cubic-bezier(0.16, 1, 0.3, 1)` ease-out instead of plain `ease`, and shorter travel distances, for a crisper feel than the original `scale(0.97)` + 56px version. (Found in `team-leadership`, backported here.)
 
 ### Keeping the repos in sync
 

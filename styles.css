@@ -137,15 +137,33 @@ img { max-width: 100%; height: auto; display: block; }
    the page's own script has confirmed it can run (js-reveal-ready on
    <html>), so a page with JS disabled or blocked never gets stuck with
    invisible content — everything just renders normally instead.
+
+   Uses the standalone `translate` property (not `transform`) for the
+   entrance slide, on purpose: the school/center/partner tiles' hover lift
+   uses `transform: translateY(-4px)` with its own fast 0.15s transition
+   (see e.g. .school-block__link:hover below) — and `transform` was also
+   being used here for the entrance. Since a `transition` shorthand
+   replaces the whole list per property, the more specific reveal rule was
+   silently overriding transform's transition to this reveal's slower
+   duration even after the reveal had long finished, making hover lifts
+   feel sluggish instead of crisp. `translate` and `transform` are
+   independent, separately-transitionable properties, so splitting them
+   here removes that conflict entirely. Also switched off the generic
+   `ease` curve to a smoother ease-out (cubic-bezier), and dropped the
+   added `scale()` and reduced the travel distance — the combination of a
+   long 56px slide, a scale change, and a slow linear-ish ease was reading
+   as heavy/sluggish rather than smooth. (Found and fixed first in the
+   `team-leadership` repo — see that repo's styles.css/README for the
+   same writeup — then backported here per "keeping the repos in sync.")
    ============================================================================= */
 .js-reveal-ready .reveal {
   opacity: 0;
-  transform: translateY(56px) scale(0.97);
-  transition: opacity 0.9s ease, transform 0.9s ease;
+  translate: 0 24px;
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), translate 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .js-reveal-ready .reveal.is-visible {
   opacity: 1;
-  transform: none;
+  translate: none;
 }
 
 /* Grid tiles and stat items get their own staggered reveal, cued off
@@ -157,15 +175,15 @@ img { max-width: 100%; height: auto; display: block; }
 .js-reveal-ready .center-block,
 .js-reveal-ready .partner-card {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  translate: 0 20px;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), translate 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .reveal.is-visible .stats__item,
 .reveal.is-visible .school-block,
 .reveal.is-visible .center-block,
 .reveal.is-visible .partner-card {
   opacity: 1;
-  transform: none;
+  translate: none;
 }
 .stats__item:nth-child(1),  .school-block:nth-child(1),  .center-block:nth-child(1),  .partner-card:nth-child(1)  { transition-delay: 0.05s; }
 .stats__item:nth-child(2),  .school-block:nth-child(2),  .center-block:nth-child(2),  .partner-card:nth-child(2)  { transition-delay: 0.11s; }
