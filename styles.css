@@ -84,7 +84,18 @@ a:hover .card-arrow {
    Reset
    ============================================================================= */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { font-size: 16px; scroll-behavior: smooth; }
+/* overflow-anchor: none avoids a browser "scroll anchoring" bug where the
+   page silently scrolls itself down a bit after load — the eyebrow sits
+   right at the very top with only 20px of padding above it, and when the
+   web fonts swap in a beat after first paint, the hero title's height
+   shifts slightly. The browser tries to nudge the scroll position in the
+   viewport to compensate, which crops the eyebrow above it. Scrolling up
+   manually reveals it fine — this just stops the auto-scroll from
+   happening in the first place. (Found and fixed first in the
+   `team-leadership` repo; backported here per "keeping the repos in
+   sync.") Set on both html and body since scroll anchoring can anchor to
+   either. */
+html { font-size: 16px; scroll-behavior: smooth; overflow-anchor: none; }
 body {
   font-family: var(--f-sans);
   color: var(--c-dark);
@@ -92,6 +103,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  overflow-anchor: none;
 }
 ul, ol { list-style: none; }
 a { color: inherit; text-decoration: none; }
