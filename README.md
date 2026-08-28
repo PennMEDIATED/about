@@ -62,6 +62,7 @@ This repo doesn't currently define `--c-gray-dark` or `--c-pale-orange` — both
 - Every section's content wrapper is named `.<section>__inner` and shares one rule (`width:100%; max-width:var(--max-w); margin-inline:auto; padding-inline:var(--pad-x);`). Add new sections to that shared selector list instead of writing a one-off inner container.
 - Section-to-section vertical rhythm uses `--space-1000` (80px) for generous breaks and `--space-600` (48px) between a heading row and the content below it.
 - BEM-ish naming: `.block__element`, modifiers as `.block--variant` or `.block__element--variant`.
+- **No eyebrow/kicker label above hero or section headings.** Removed 2026-08-28 (this page previously had `.eyebrow` "About the Center" above "Mission Statement") — headings stand alone with nothing above them, sitewide.
 
 ### Heading and body-copy positioning
 
@@ -78,7 +79,6 @@ This repo doesn't currently define `--c-gray-dark` or `--c-pale-orange` — both
 
 ### `about`-specific components (not currently used in `home`/`grants`)
 
-- **Eyebrow label** (`.eyebrow`): a small uppercase red kicker above a section heading. Used once, above "Mission Statement."
 - **Stats strip** (`#stats-section` / `.stats`): a light-gray "at a glance" band between Mission and Orbital — three `.stats__item`s, each a large gradient-clipped numeral (`.stats__value`) over a small uppercase label (`.stats__label`). Numerals count up from 0 via `animateCount()` (in the page's inline `<script>`) when the strip scrolls into view, reading `data-target`/`data-prefix`/`data-suffix` off the markup; the static text is already the correct final value, so this is a pure enhancement that degrades safely if JS doesn't run.
 - **Scroll-hint arrow** (`.scroll-hint-wrap` / `.scroll-hint`): a bouncing circular arrow in the plain white gap between the Stats strip and Orbital, inviting the user to keep scrolling. Links to `#orbital-section` (the `<section>` itself, not the heading, so the section's own top padding/gradient isn't scrolled past). Fades out once Orbital scrolls into view, via `.scroll-hint--hidden`, toggled by the same observer that drives Orbital's reveal.
 - **Decorative pull-quote marks**: an oversized, low-opacity serif `"` rendered via `::before` behind each blockquote (`.mission__quote blockquote::before` and the `--box` variant), for editorial scale beyond the accent bar alone.

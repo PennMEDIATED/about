@@ -85,11 +85,11 @@ a:hover .card-arrow {
    ============================================================================= */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 /* overflow-anchor: none avoids a browser "scroll anchoring" bug where the
-   page silently scrolls itself down a bit after load — the eyebrow sits
-   right at the very top with only 20px of padding above it, and when the
-   web fonts swap in a beat after first paint, the hero title's height
-   shifts slightly. The browser tries to nudge the scroll position in the
-   viewport to compensate, which crops the eyebrow above it. Scrolling up
+   page silently scrolls itself down a bit after load — the page's top
+   heading sits right at the very top with only 20px of padding above it,
+   and when the web fonts swap in a beat after first paint, the heading's
+   height shifts slightly. The browser tries to nudge the scroll position
+   in the viewport to compensate, which crops the heading. Scrolling up
    manually reveals it fine — this just stops the auto-scroll from
    happening in the first place. (Found and fixed first in the
    `team-leadership` repo; backported here per "keeping the repos in
@@ -126,21 +126,6 @@ img { max-width: 100%; height: auto; display: block; }
   max-width: var(--max-w);
   margin-inline: auto;
   padding-inline: var(--pad-x);
-}
-
-/* =============================================================================
-   Eyebrow label
-   Small uppercase kicker above a section heading — editorial wayfinding
-   cue. Used once, above Mission Statement.
-   ============================================================================= */
-.eyebrow {
-  font-family: var(--f-sans);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--c-red);
-  margin-bottom: var(--space-150);
 }
 
 /* =============================================================================
