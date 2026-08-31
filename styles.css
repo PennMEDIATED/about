@@ -120,8 +120,7 @@ img { max-width: 100%; height: auto; display: block; }
 .mission__inner,
 .related-centers__inner,
 .orbital__inner,
-.partners__inner,
-.stats__inner {
+.partners__inner {
   width: 100%;
   max-width: var(--max-w);
   margin-inline: auto;
@@ -167,7 +166,6 @@ img { max-width: 100%; height: auto; display: block; }
    their parent section's .is-visible class — each item fades/lifts in a
    beat after the one before it instead of the whole grid appearing as a
    single flat block, so the reveal reads as more deliberate/noticeable. */
-.js-reveal-ready .stats__item,
 .js-reveal-ready .school-block,
 .js-reveal-ready .center-block,
 .js-reveal-ready .partner-card {
@@ -175,16 +173,15 @@ img { max-width: 100%; height: auto; display: block; }
   translate: 0 20px;
   transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), translate 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.reveal.is-visible .stats__item,
 .reveal.is-visible .school-block,
 .reveal.is-visible .center-block,
 .reveal.is-visible .partner-card {
   opacity: 1;
   translate: none;
 }
-.stats__item:nth-child(1),  .school-block:nth-child(1),  .center-block:nth-child(1),  .partner-card:nth-child(1)  { transition-delay: 0.05s; }
-.stats__item:nth-child(2),  .school-block:nth-child(2),  .center-block:nth-child(2),  .partner-card:nth-child(2)  { transition-delay: 0.11s; }
-.stats__item:nth-child(3),  .school-block:nth-child(3),  .center-block:nth-child(3),  .partner-card:nth-child(3)  { transition-delay: 0.17s; }
+.school-block:nth-child(1),  .center-block:nth-child(1),  .partner-card:nth-child(1)  { transition-delay: 0.05s; }
+.school-block:nth-child(2),  .center-block:nth-child(2),  .partner-card:nth-child(2)  { transition-delay: 0.11s; }
+.school-block:nth-child(3),  .center-block:nth-child(3),  .partner-card:nth-child(3)  { transition-delay: 0.17s; }
 .school-block:nth-child(4),  .center-block:nth-child(4)  { transition-delay: 0.23s; }
 .school-block:nth-child(5),  .center-block:nth-child(5)  { transition-delay: 0.29s; }
 .school-block:nth-child(6),  .center-block:nth-child(6)  { transition-delay: 0.35s; }
@@ -244,7 +241,7 @@ img { max-width: 100%; height: auto; display: block; }
   display: flex;
   flex-direction: column;
   gap: var(--space-300);           /* 24px between paragraphs — rhythm */
-  flex: 1 1 480px;                 /* takes remaining row width next to the quote box */
+  flex: 1 1 0;                     /* grows evenly against the quote box below, rather than consuming all leftover space next to a fixed-width sibling */
 }
 
 .mission__body p {
@@ -283,24 +280,6 @@ img { max-width: 100%; height: auto; display: block; }
   margin-bottom: var(--space-200);
 }
 
-/* Oversized decorative quotation mark — gives the pull-quote real
-   editorial scale instead of relying on the accent bar alone. Sits
-   behind the quote text (z-index/negative) at low opacity so it reads as
-   texture, not a second piece of content. */
-.mission__quote blockquote::before {
-  content: '\201C';
-  position: absolute;
-  top: -0.35em;
-  left: var(--space-300);
-  z-index: 0;
-  font-family: var(--f-serif);
-  font-size: 5em;
-  line-height: 1;
-  color: var(--c-red);
-  opacity: 0.15;
-  pointer-events: none;
-}
-
 .mission__quote blockquote p {
   position: relative;
   z-index: 1;
@@ -336,15 +315,24 @@ img { max-width: 100%; height: auto; display: block; }
    .mission__inner--center column, where `width` + auto margins center
    it, since flex-basis in a column container would size height instead
    of width). */
+/* Card treatment matches the blog repo's `.pull-quote` component
+   (https://pennmediated.github.io/blog/#gni-membership): a tinted
+   background + left accent bar wrapping both the quote and its
+   attribution as one card, rather than just a bare left border on the
+   blockquote alone. Applied here on the `<figure>` itself so it wraps
+   both the `<blockquote>` and the `<figcaption>` below it in one box. */
 .mission__quote--box {
   max-width: none;
   width: 400px;
   margin-top: 0;
   margin-inline: auto;   /* centers it when it's the sole item in a column context */
+  background: var(--c-light-bg);
+  border-left: 4px solid var(--c-accent);
+  padding: var(--space-250) var(--space-300);
 }
 
 .mission__row .mission__quote--box {
-  flex: 0 0 400px;
+  flex: 1 1 0;            /* grows evenly against .mission__body, so the two sides split the row roughly 50/50 instead of the quote staying a fixed 400px against a much wider paragraph */
   margin-inline: 0;      /* positioned by the row layout instead, not centered */
 }
 
@@ -360,23 +348,9 @@ img { max-width: 100%; height: auto; display: block; }
 
 .mission__quote--box blockquote {
   position: relative;
-  border-left: 4px solid #FF4825D4;   /* accent bar — spans just the quote text, not the attribution below */
-  padding-left: var(--space-300);
+  padding-left: 0;    /* cancels .mission__quote blockquote's own accent-bar padding — the card's own border-left (on the figure) is the only accent bar now */
+  border-left: none;  /* cancels .mission__quote blockquote's own border — avoids a doubled line, since both classes apply to the same element */
   margin-bottom: var(--space-150);
-}
-
-.mission__quote--box blockquote::before {
-  content: '\201C';
-  position: absolute;
-  top: -0.4em;
-  left: var(--space-250);
-  z-index: 0;
-  font-family: var(--f-serif);
-  font-size: 3.4em;
-  line-height: 1;
-  color: var(--c-red);
-  opacity: 0.15;
-  pointer-events: none;
 }
 
 .mission__quote--box blockquote p {
@@ -385,14 +359,18 @@ img { max-width: 100%; height: auto; display: block; }
 }
 
 .mission__quote--box blockquote p {
-  font-size: 19px;
+  font-size: 22px;
   font-style: italic;
   line-height: 1.5;
 }
 
 .mission__quote--box figcaption {
-  padding-left: var(--space-300);   /* aligns with the quote text above, without its own bar */
+  font-family: var(--f-sans);
   font-size: 13px;
+  font-weight: 600;
+  font-style: normal;
+  letter-spacing: 0;
+  padding-left: 0;   /* cancels .mission__quote figcaption's own padding — the card's own padding (on the figure) already insets it */
 }
 
 /* The row actually wraps around ~1103px (not the ~928px math above would
@@ -426,96 +404,11 @@ img { max-width: 100%; height: auto; display: block; }
   min-height: 80px;
 }
 
-/* =============================================================================
-   STATS  (Section)
-   "At a glance" strip — pulls a few numbers already implied by the Mission
-   and Orbital copy (combined investment, school count) into a scannable,
-   large-numeral band between Mission and Orbital.
-   ============================================================================= */
-.stats {
-  position: relative;
-  background: var(--c-light-bg);
-  padding-block: var(--space-800);
-  border-top: 1px solid rgba(13, 13, 12, 0.08);
-  border-bottom: 1px solid rgba(13, 13, 12, 0.08);
-}
-
-/* Thin gradient bar across the very top of the strip — the same brand
-   gradient used in the Orbital section, so the panel reads as tied to
-   the rest of the page's identity rather than a plain gray band. */
-.stats::before {
-  content: '';
-  position: absolute;
-  top: -1px;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: var(--c-gradient);
-}
-
-/* Centered with a fixed gap (not space-between) so the three stats read
-   as one grouped unit — space-between let them drift apart as separate,
-   unrelated islands at wider viewports. Vertical dividers between items
-   reinforce that same "one strip" reading. */
-.stats__inner {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: stretch;
-  gap: var(--space-800);
-}
-
-.stats__item {
-  flex: 0 1 220px;
-  text-align: center;
-  padding-left: var(--space-800);
-}
-
-.stats__item:first-child {
-  padding-left: 0;
-}
-
-.stats__item + .stats__item {
-  border-left: 1px solid rgba(13, 13, 12, 0.12);
-}
-
-/* Numerals rendered through the brand gradient (same technique as a
-   knocked-out CTA label) instead of a flat color — gives the strip's
-   focal element some of the same visual richness as the gradient
-   section, rather than sitting flat against the light background. */
-.stats__value {
-  font-family: var(--f-serif);
-  font-size: 56px;
-  font-weight: 600;
-  line-height: 1;
-  margin-bottom: var(--space-150);
-  background: var(--c-gradient);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.stats__label {
-  font-family: var(--f-sans);
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--c-gray);
-}
-
-@media (max-width: 640px) {
-  .stats__value { font-size: 44px; }
-  .stats__item { flex: 1 1 100%; padding-left: 0; border-left: none; padding-top: var(--space-400); }
-  .stats__item:first-child { padding-top: 0; }
-  .stats__item + .stats__item { border-left: none; border-top: 1px solid rgba(13, 13, 12, 0.12); }
-}
-
-/* Scroll-down cue — sits in its own plain-white strip between the Stats
-   panel and Orbital, standing in for the top of the gradient section
-   before it's scrolled into view. Reuses the same dark-circle language
-   as .card-arrow for brand consistency, with a slow bounce so it reads
-   as an invitation rather than noise. Fades out once the gradient
+/* Scroll-down cue — sits in its own plain-white strip between Mission
+   and Orbital, standing in for the top of the gradient section before
+   it's scrolled into view. Reuses the same dark-circle language as
+   .card-arrow for brand consistency, with a slow bounce so it reads as
+   an invitation rather than noise. Fades out once the gradient
    (Orbital) section actually comes into view — toggled continuously by
    its own IntersectionObserver, via the .scroll-hint--hidden class. */
 .scroll-hint-wrap {
@@ -626,7 +519,7 @@ img { max-width: 100%; height: auto; display: block; }
    (regardless of aspect ratio, e.g. PORES' very wide wordmark) ever gets
    squashed the way a fixed height + max-width alone can distort it. */
 .center-block__logo {
-  max-height: 128px;
+  max-height: 152px;
   max-width: 100%;
   width: auto;
   height: auto;

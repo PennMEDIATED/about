@@ -30,24 +30,6 @@
     </div>
   </section>
 
-  <!-- ── At a Glance (Stats) ─────────────────────────────────────── -->
-  <section id="stats-section" class="stats reveal" aria-label="Penn MEDIATED at a glance">
-    <div class="stats__inner">
-      <div class="stats__item">
-        <div class="stats__value" data-target="10" data-prefix="$" data-suffix="M">$10M</div>
-        <div class="stats__label">Five-Year Combined Investment</div>
-      </div>
-      <div class="stats__item">
-        <div class="stats__value" data-target="7">7</div>
-        <div class="stats__label">Penn Schools</div>
-      </div>
-      <div class="stats__item">
-        <div class="stats__value" data-target="12">12</div>
-        <div class="stats__label">External Partners &amp; Related Penn Centers</div>
-      </div>
-    </div>
-  </section>
-
   <div class="scroll-hint-wrap">
     <a href="#orbital-section" class="scroll-hint" aria-label="Scroll down to learn more">
       <span class="scroll-hint__arrow" aria-hidden="true">&#8595;</span>
@@ -222,26 +204,6 @@
     // permanently invisible content; it just renders normally instead.
     document.documentElement.classList.add('js-reveal-ready');
 
-    // Animates a .stats__value from 0 up to its data-target when the
-    // stats strip scrolls into view — the static text is already the
-    // correct final value, so this is a pure enhancement, not something
-    // the content depends on.
-    function animateCount(el) {
-      var target = parseFloat(el.getAttribute('data-target'));
-      var prefix = el.getAttribute('data-prefix') || '';
-      var suffix = el.getAttribute('data-suffix') || '';
-      var duration = 900;
-      var start = null;
-      function step(ts) {
-        if (!start) start = ts;
-        var progress = Math.min((ts - start) / duration, 1);
-        var eased = 1 - Math.pow(1 - progress, 3);
-        el.textContent = prefix + Math.round(target * eased) + suffix;
-        if (progress < 1) requestAnimationFrame(step);
-      }
-      requestAnimationFrame(step);
-    }
-
     // One-shot fade-in for most sections: each fades in the first time it
     // scrolls into view and then stays visible, even when scrolled back
     // up past it. Sections marked .reveal--toggle (Orbital, Partners) are
@@ -252,9 +214,6 @@
         entries.forEach(function (entry) {
           if (entry.isIntersecting) {
             entry.target.classList.add('is-visible');
-            if (entry.target.classList.contains('stats')) {
-              entry.target.querySelectorAll('[data-target]').forEach(animateCount);
-            }
             revealObserver.unobserve(entry.target);
           }
         });
