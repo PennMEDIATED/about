@@ -1,6 +1,6 @@
 # Penn MEDIATED — About
 
-The About page for the [Center on Media, Technology and Democracy](https://infodem.upenn.edu). Static HTML/CSS, no build step. Deployed directly to https://infodem.upenn.edu/about/ — see "Deployment" below.
+The About page for the [Center on Media, Technology and Democracy](https://infodem.upenn.edu). Static HTML/CSS, no build step. Deployed directly to https://mediated.upenn.edu/about/ — see "Deployment" below.
 
 Same conventions as the [`home`](https://github.com/PennMEDIATED/home) and [`grants`](https://github.com/PennMEDIATED/grants) repos — shared spacing tokens, brand colors, and fonts. This page doesn't currently include the "Subscribe Here" newsletter/supporters block that `home` and `grants` share with each other.
 
@@ -10,14 +10,13 @@ Same conventions as the [`home`](https://github.com/PennMEDIATED/home) and [`gra
 
 ## Deployment
 
-This repo deploys straight to the live site at its real URL — no GitHub Pages hosting step. The old WordPress iframe embed of this page may still be running temporarily alongside this (e.g. as a fallback during the transition) — check with the team before assuming it's fully retired.
+This repo deploys straight to the live site — no GitHub Pages hosting step. The old WordPress iframe embed of this page may still be running temporarily alongside this (e.g. as a fallback during the transition) — check with the team before assuming it's fully retired.
 
-- A clone of this repo lives on the department's web server (eniac) at the path WordPress resolves `/about/` to. The server's `.htaccess` defers to real files/directories on disk before handing a request to WordPress, so this repo's own files are what actually serve `https://infodem.upenn.edu/about/` — there's no WordPress Page involved at that URL anymore.
-- A cron job on that server runs `git pull` every minute using a read-only GitHub deploy key, so pushing a change to `main` reaches the live site within about a minute.
-- To undo a live mistake: `git revert` the bad commit and push it, same as any other change. **Don't** `git reset --hard` + force-push — the server's cron job expects a normal fast-forward `git pull`, and rewritten history will make it fail instead of quietly applying the fix.
-- The server only ever pulls; it never pushes back to GitHub. Edits should always originate here (in GitHub), not by hand-editing files directly on the server — a direct edit on the server can conflict with the next automatic pull.
+- A clone of this repo lives on the department's web server (eniac) at the path WordPress resolves `/about/` to, on the new `mediated.upenn.edu` instance. The server's `.htaccess` defers to real files/directories on disk before handing a request to WordPress, so this repo's own files are what actually serve `https://mediated.upenn.edu/about/` — there's no WordPress Page involved at that URL.
+- A GitHub webhook fires on every push to `main`, hitting a WordPress REST endpoint (`/wp-json/mediated/v1/deploy`) that verifies the request's signature (HMAC-SHA256, shared secret) and runs `git pull` in this repo's directory on the server. Deploys land within seconds of pushing — no polling delay.
+- To undo a live mistake: `git revert` the bad commit and push it, same as any other change. **Don't** `git reset --hard` + force-push — the webhook always runs a normal `git pull`, and rewritten history will make that fail instead of quietly applying the fix.
 
-Full setup process (SSH access, deploy keys, cron) is documented in `eniac-github-ssh-setup.md` at the top level of the `Website` folder — that's the reference if you're setting this up for another repo or onboarding someone new to it.
+Full setup process (SSH access, deploy keys, the older cron-based pull) is documented in `eniac-github-ssh-setup.md` at the top level of the `Website` folder — note that guide hasn't been updated for the webhook approach yet, so treat it as a reference for SSH/key setup only, not the current deploy trigger mechanism.
 
 ## Style guide (shared across `about` and `home`)
 
