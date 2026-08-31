@@ -404,46 +404,6 @@ img { max-width: 100%; height: auto; display: block; }
   min-height: 80px;
 }
 
-/* Scroll-down cue — sits in its own plain-white strip between Mission
-   and Orbital, standing in for the top of the gradient section before
-   it's scrolled into view. Reuses the same dark-circle language as
-   .card-arrow for brand consistency, with a slow bounce so it reads as
-   an invitation rather than noise. Fades out once the gradient
-   (Orbital) section actually comes into view — toggled continuously by
-   its own IntersectionObserver, via the .scroll-hint--hidden class. */
-.scroll-hint-wrap {
-  display: flex;
-  justify-content: center;
-  padding-block: var(--space-300);
-  background: var(--c-white);
-}
-.scroll-hint {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 1px solid rgba(13, 13, 12, 0.15);
-  color: var(--c-dark);
-  font-size: 16px;
-  animation: scroll-hint-bounce 2.2s ease-in-out infinite;
-  transition: border-color 0.15s, color 0.15s, opacity 0.4s ease;
-}
-.scroll-hint:hover {
-  border-color: var(--c-red);
-  color: var(--c-red);
-  animation-play-state: paused;
-}
-.scroll-hint--hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-@keyframes scroll-hint-bounce {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(8px); }
-}
-
 /* =============================================================================
    RELATED CENTERS AT PENN  (Section)
    Solid red-orange band background — full section, including the card

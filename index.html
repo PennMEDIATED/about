@@ -30,12 +30,6 @@
     </div>
   </section>
 
-  <div class="scroll-hint-wrap">
-    <a href="#orbital-section" class="scroll-hint" aria-label="Scroll down to learn more">
-      <span class="scroll-hint__arrow" aria-hidden="true">&#8595;</span>
-    </a>
-  </div>
-
   <!-- ── Interdisciplinary Hub (Orbital) ─────────────────────────── -->
   <section id="orbital-section" class="orbital reveal reveal--toggle" aria-labelledby="orbital-heading">
     <div class="orbital__inner">
@@ -227,18 +221,12 @@
     // ways — each (and, via the CSS combinator off its .is-visible
     // class, its own staggered school-block/partner-card tiles) fades
     // back out when scrolled past going up, not just a one-time reveal
-    // like the other sections. The scroll-hint's visibility rides along
-    // specifically on Orbital's entry, since it points at Orbital.
-    var scrollHint = document.querySelector('.scroll-hint');
-    var orbitalEl = document.querySelector('.orbital');
+    // like the other sections.
     var toggleEls = document.querySelectorAll('.reveal--toggle');
     if ('IntersectionObserver' in window) {
       var toggleObserver = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
           entry.target.classList.toggle('is-visible', entry.isIntersecting);
-          if (scrollHint && entry.target === orbitalEl) {
-            scrollHint.classList.toggle('scroll-hint--hidden', entry.isIntersecting);
-          }
         });
       }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
       toggleEls.forEach(function (el) { toggleObserver.observe(el); });
