@@ -327,7 +327,7 @@ img { max-width: 100%; height: auto; display: block; }
   margin-top: 0;
   margin-inline: auto;   /* centers it when it's the sole item in a column context */
   background: var(--c-light-bg);
-  border-left: 4px solid var(--c-accent);
+  border-left: 4px solid var(--c-red);
   padding: var(--space-250) var(--space-300);
 }
 
@@ -360,7 +360,6 @@ img { max-width: 100%; height: auto; display: block; }
 
 .mission__quote--box blockquote p {
   font-size: 22px;
-  font-style: italic;
   line-height: 1.5;
 }
 
@@ -515,9 +514,9 @@ img { max-width: 100%; height: auto; display: block; }
   z-index: 1;
 }
 
-/* orbital-title: EB Garamond Medium 48px, fill white, lh=50.4 */
+/* orbital-title: DM Sans Medium 48px, fill white, lh=50.4 */
 .orbital__title {
-  font-family: var(--f-serif);
+  font-family: var(--f-sans);
   font-size: 48px;
   font-weight: 500;
   line-height: 50.4px;
