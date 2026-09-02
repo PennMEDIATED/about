@@ -467,15 +467,15 @@ img { max-width: 100%; height: auto; display: block; }
 
 .related-centers__grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--space-200);
 }
 
 @media (max-width: 900px) {
-  .related-centers__grid { grid-template-columns: repeat(2, 1fr); }
+  .related-centers__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 480px) {
-  .related-centers__grid { grid-template-columns: 1fr; }
+  .related-centers__grid { grid-template-columns: minmax(0, 1fr); }
 }
 
 /* 4:3 tile, sized off its own width (aspect-ratio) — same reasoning as
@@ -505,7 +505,7 @@ img { max-width: 100%; height: auto; display: block; }
    (regardless of aspect ratio, e.g. PORES' very wide wordmark) ever gets
    squashed the way a fixed height + max-width alone can distort it. */
 .center-block__logo {
-  max-height: 152px;
+  max-height: min(152px, 100%);
   max-width: 100%;
   width: auto;
   height: auto;
@@ -571,16 +571,16 @@ img { max-width: 100%; height: auto; display: block; }
    card pattern as the /grants repo's eligible-schools grid. */
 .school-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--space-200);
   margin-bottom: var(--space-400);   /* 32px */
 }
 
 @media (max-width: 900px) {
-  .school-grid { grid-template-columns: repeat(2, 1fr); }
+  .school-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 480px) {
-  .school-grid { grid-template-columns: 1fr; }
+  .school-grid { grid-template-columns: minmax(0, 1fr); }
 }
 
 /* 4:3 tile, sized off its own width (aspect-ratio) rather than a fixed
@@ -605,8 +605,14 @@ img { max-width: 100%; height: auto; display: block; }
   transform: translateY(-4px);
 }
 
+/* max-height is what sizes these: every school/funder logo is 4:3, the same
+   ratio as the tile, so height binds before max-width does. 160px fills ~88%
+   of the tile's content box at full width. The min(...,100%) is load-bearing:
+   a bare 160px cap would force the tile taller than its 4/3 aspect-ratio at
+   the narrow 4-column widths, since aspect-ratio yields to content. Capping
+   at the content box instead keeps the tile's size fixed at every width. */
 .school-block__logo {
-  max-height: 128px;
+  max-height: min(160px, 100%);
   max-width: 100%;
   width: auto;
   height: auto;
@@ -690,7 +696,7 @@ img { max-width: 100%; height: auto; display: block; }
 }
 
 .partner-card__logo {
-  max-height: 128px;
+  max-height: min(128px, 100%);
   max-width: 100%;
   width: auto;
   height: auto;
