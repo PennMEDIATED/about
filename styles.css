@@ -525,6 +525,10 @@ img { max-width: 100%; height: auto; display: block; }
   margin-bottom: var(--space-400);   /* 32px */
 }
 
+.orbital__title em {
+  font-style: normal;   /* the <em> stays for semantic emphasis, but reads upright, not italic */
+}
+
 /* orbital-body: DM Sans Light 18px, fill white, lh=22.75 */
 .orbital__lead {
   font-family: var(--f-sans);
