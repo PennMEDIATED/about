@@ -59,6 +59,15 @@
   --pad-x: var(--space-1000);   /* 80px side padding — page-level rhythm */
 }
 
+/* Side padding scales down on smaller screens — same breakpoints as
+   /home, /grants, /events and /team-leadership. */
+@media (max-width: 900px) {
+  :root { --pad-x: var(--space-400); }  /* 32px */
+}
+@media (max-width: 480px) {
+  :root { --pad-x: var(--space-250); }  /* 20px */
+}
+
 /* =============================================================================
    External Link Arrow Badge
    Black circle + white arrow that signals "opens an external site." Used
@@ -360,7 +369,7 @@ img { max-width: 100%; height: auto; display: block; }
    side-by-side size once the screen crosses 1120px, which only makes
    sense for the Gutmann quote's row layout. */
 .mission__inner--center .mission__quote--box {
-  width: clamp(280px, 75%, 860px);   /* matches the Gutmann quote's stacked width exactly */
+  width: clamp(min(280px, 100%), 75%, 860px);   /* matches the Gutmann quote's stacked width exactly */
   max-width: 860px;
 }
 
@@ -397,7 +406,7 @@ img { max-width: 100%; height: auto; display: block; }
    instead of leaving a gap where it's wrapped but still left-aligned. */
 @media (max-width: 1120px) {
   .mission__quote--box {
-    width: clamp(280px, 75%, 860px);
+    width: clamp(min(280px, 100%), 75%, 860px);
     max-width: 860px;
     margin-inline: auto;   /* centers the box on its own wrapped line */
   }
@@ -406,7 +415,7 @@ img { max-width: 100%; height: auto; display: block; }
      wins once wrapped — otherwise that more-specific rule kept pinning
      the box to the left even after it dropped to its own line. */
   .mission__row .mission__quote--box {
-    flex-basis: clamp(280px, 75%, 860px);
+    flex-basis: clamp(min(280px, 100%), 75%, 860px);
     margin-inline: auto;
   }
 }

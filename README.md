@@ -41,7 +41,7 @@ This repo doesn't currently define `--c-gray-dark` or `--c-pale-orange` — both
 - `--f-serif`: `'EB Garamond', Georgia, 'Times New Roman', serif` — headlines, quotes, the "MEDIATED" wordmark
 - `--f-sans`: `'DM Sans', system-ui, -apple-system, sans-serif` — everything else
 
-**Layout:** `--max-w: 1440px` page cap, `--pad-x: var(--space-1000)` (80px) side padding on the shared `*__inner` containers. This repo's `--pad-x` is currently fixed (not responsive) — `home` scales it down on narrow screens (32px under 900px, 20px under 480px). If you add anything to this page wider than a headline/paragraph, backport the same responsive `--pad-x` media queries from `home`'s `styles.css` rather than letting content overflow on mobile.
+**Layout:** `--max-w: 1440px` page cap, `--pad-x: var(--space-1000)` (80px) side padding on the shared `*__inner` containers, scaling down responsively to `--space-400` (32px) under 900px and `--space-250` (20px) under 480px — same breakpoints as `home`/`grants`/`events`/`team-leadership`. Grid and flex children shrink below their content: grid tracks are `minmax(0, 1fr)` rather than `1fr`, and flex items that hold text carry `min-width: 0`. Without those, a track or item is pinned to its widest child and pushes the page wider than the viewport on small screens.
 
 ### Layout conventions
 
@@ -107,3 +107,5 @@ The top five are `clamp()` values that interpolate across the viewport, so table
 **Line heights are tokens too** — `--lh-display` 1.05, `--lh-heading` 1.15, `--lh-lede` 1.26, `--lh-title` 1.3, `--lh-body` 1.55. Never set a line-height in px; it breaks the fluid sizes.
 
 **Heading gaps.** Section title to first content is `var(--space-300)` (24px); page or hero title to content is `var(--space-250)` (20px).
+
+**Section rhythm.** A full-width colored section carries `var(--space-1000)` (80px) top and bottom padding, so its heading never sits flush against the band's edge. The page hero's bottom padding is `var(--space-600)` (48px) — shorter than 80px because the section below supplies its own.
