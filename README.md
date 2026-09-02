@@ -40,14 +40,13 @@ This repo doesn't currently define `--c-gray-dark` or `--c-pale-orange` — both
 **Type:**
 - `--f-serif`: `'EB Garamond', Georgia, 'Times New Roman', serif` — headlines, quotes, the "MEDIATED" wordmark
 - `--f-sans`: `'DM Sans', system-ui, -apple-system, sans-serif` — everything else
-- `--f-mono`: `'Courier New', Courier, monospace` — small meta labels only
 
 **Layout:** `--max-w: 1440px` page cap, `--pad-x: var(--space-1000)` (80px) side padding on the shared `*__inner` containers. This repo's `--pad-x` is currently fixed (not responsive) — `home` scales it down on narrow screens (32px under 900px, 20px under 480px). If you add anything to this page wider than a headline/paragraph, backport the same responsive `--pad-x` media queries from `home`'s `styles.css` rather than letting content overflow on mobile.
 
 ### Layout conventions
 
 - Every section's content wrapper is named `.<section>__inner` and shares one rule (`width:100%; max-width:var(--max-w); margin-inline:auto; padding-inline:var(--pad-x);`). Add new sections to that shared selector list instead of writing a one-off inner container.
-- Section-to-section vertical rhythm uses `--space-1000` (80px) for generous breaks and `--space-600` (48px) between a heading row and the content below it.
+- Section-to-section vertical rhythm uses `--space-1000` (80px) for generous breaks and `--space-300` (24px) between a section heading and the content below it.
 - BEM-ish naming: `.block__element`, modifiers as `.block--variant` or `.block__element--variant`.
 - **No eyebrow/kicker label above hero or section headings.** Removed 2026-08-28 (this page previously had `.eyebrow` "About the Center" above "Mission Statement") — headings stand alone with nothing above them, sitewide.
 
@@ -80,3 +79,31 @@ This repo doesn't currently define `--c-gray-dark` or `--c-pale-orange` — both
 ### Keeping the repos in sync
 
 `about`, `home`, and `grants` are separate repos with duplicated CSS, not a shared stylesheet — so consistency is a discipline, not something enforced automatically. When you change a shared token or component in one repo, check whether the same change belongs in the others before considering the task done.
+
+## Typography
+
+Sitewide convention. The `--fs-*`/`--lh-*` block at the top of `styles.css` is canonical and identical in every page repo.
+
+**Two families, no third.** `--f-serif` (EB Garamond) for page and section titles and pull-quote copy; `--f-sans` (DM Sans) for everything else. There is no monospace face — uppercase micro-labels are DM Sans 700 uppercase with `letter-spacing: 0.08em`.
+
+**Sizes come from tokens, never raw px.**
+
+| Token | Mobile (=<480px) | Desktop (>=1440px) | Used for |
+| --- | --- | --- | --- |
+| `--fs-display` | 36px | 76px | full-bleed hero |
+| `--fs-h1` | 36px | 56px | page title |
+| `--fs-h2` | 26px | 40px | section titles |
+| `--fs-h3` | 20px | 24px | card and third-level titles |
+| `--fs-lede` | 18px | 20px | intro paragraphs |
+| `--fs-body` | 16px | 16px | body copy |
+| `--fs-small` | 14px | 14px | captions, meta, form controls |
+| `--fs-small-serif` | 15px | 15px | EB Garamond at small sizes |
+| `--fs-micro` | 12px | 12px | uppercase labels, tags, counts |
+
+The top five are `clamp()` values that interpolate across the viewport, so tablet widths need no separate `@media` override. Only add a breakpoint font-size when a specific layout actually demands it.
+
+**12px is the floor.** Nothing ships smaller. EB Garamond and uppercase-with-letter-spacing both read smaller than their nominal size, which is what `--fs-small-serif` and the 12px floor exist to absorb.
+
+**Line heights are tokens too** — `--lh-display` 1.05, `--lh-heading` 1.15, `--lh-lede` 1.26, `--lh-title` 1.3, `--lh-body` 1.55. Never set a line-height in px; it breaks the fluid sizes.
+
+**Heading gaps.** Section title to first content is `var(--space-300)` (24px); page or hero title to content is `var(--space-250)` (20px).
