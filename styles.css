@@ -467,15 +467,14 @@ img { max-width: 100%; height: auto; display: block; }
 
 .related-centers__grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  /* Intrinsic column count: the track floor decides how many fit, so there
+     are no breakpoints to keep in sync and adding tiles needs no CSS change.
+     min(260px, 100%) rather than a bare 260px — a bare minmax floor cannot
+     shrink below itself and overflows viewports narrower than the track.
+     auto-fill, not auto-fit: empty trailing tracks are what keep a 2-tile
+     section the same tile size as an 8-tile one instead of stretching. */
+  grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr));
   gap: var(--space-200);
-}
-
-@media (max-width: 900px) {
-  .related-centers__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-@media (max-width: 480px) {
-  .related-centers__grid { grid-template-columns: minmax(0, 1fr); }
 }
 
 /* 4:3 tile, sized off its own width (aspect-ratio) — same reasoning as
@@ -571,16 +570,15 @@ img { max-width: 100%; height: auto; display: block; }
    card pattern as the /grants repo's eligible-schools grid. */
 .school-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  /* Intrinsic column count: the track floor decides how many fit, so there
+     are no breakpoints to keep in sync and adding tiles needs no CSS change.
+     min(260px, 100%) rather than a bare 260px — a bare minmax floor cannot
+     shrink below itself and overflows viewports narrower than the track.
+     auto-fill, not auto-fit: empty trailing tracks are what keep a 2-tile
+     section the same tile size as an 8-tile one instead of stretching. */
+  grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr));
   gap: var(--space-200);
   margin-bottom: var(--space-400);   /* 32px */
-}
-
-@media (max-width: 900px) {
-  .school-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-@media (max-width: 480px) {
-  .school-grid { grid-template-columns: minmax(0, 1fr); }
 }
 
 /* 4:3 tile, sized off its own width (aspect-ratio) rather than a fixed
@@ -666,20 +664,24 @@ img { max-width: 100%; height: auto; display: block; }
 }
 
 .partners__grid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  /* Intrinsic column count: the track floor decides how many fit, so there
+     are no breakpoints to keep in sync and adding tiles needs no CSS change.
+     min(260px, 100%) rather than a bare 260px — a bare minmax floor cannot
+     shrink below itself and overflows viewports narrower than the track.
+     auto-fill, not auto-fit: empty trailing tracks are what keep a 2-tile
+     section the same tile size as an 8-tile one instead of stretching. */
+  grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr));
   gap: var(--space-200);
 }
 
-/* Same width as one column of the 4-column school-grid/related-centers
-   grid (same container max-width/padding, same gap value), so these
-   tiles come out the exact same size as the other sections' — without
-   actually joining a 4-column grid, which would reserve two empty
-   trailing columns since there are only 2 partner cards. */
+/* A plain grid item now. The tile width comes from the shared track floor,
+   so these come out the same size as the school and centre tiles without
+   any width arithmetic to update when a partner is added. Block, not a
+   flex column: a column flex container sizes itself from its item, which
+   let the tile inside drift off 4/3 by a few pixels at some widths. */
 .partner-card {
-  display: flex;
-  flex-direction: column;
-  width: calc((100% - 3 * var(--space-200)) / 4);
+  display: block;
 }
 
 .partner-card__link {
