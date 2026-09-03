@@ -396,7 +396,7 @@ img { max-width: 100%; height: auto; display: block; }
 }
 
 .mission__quote--box figcaption {
-  font-family: var(--f-sans);
+  font-family: var(--f-serif);
   font-size: var(--fs-small);
   font-weight: 600;
   font-style: normal;
