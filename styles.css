@@ -505,8 +505,8 @@ img { max-width: 100%; height: auto; display: block; }
    (regardless of aspect ratio, e.g. PORES' very wide wordmark) ever gets
    squashed the way a fixed height + max-width alone can distort it. */
 .center-block__logo {
-  max-height: min(152px, 100%);
-  max-width: 100%;
+  max-height: 100%;
+  max-width: min(100%, 213px);   /* 213 = 160 x 4/3 */
   width: auto;
   height: auto;
 }
@@ -605,15 +605,20 @@ img { max-width: 100%; height: auto; display: block; }
   transform: translateY(-4px);
 }
 
-/* max-height is what sizes these: every school/funder logo is 4:3, the same
-   ratio as the tile, so height binds before max-width does. 160px fills ~88%
-   of the tile's content box at full width. The min(...,100%) is load-bearing:
-   a bare 160px cap would force the tile taller than its 4/3 aspect-ratio at
-   the narrow 4-column widths, since aspect-ratio yields to content. Capping
-   at the content box instead keeps the tile's size fixed at every width. */
+/* One cap for every logo tile on the page — school, related-centre and
+   partner alike: min(160px, 100%). Every logo asset is 4:3, the same ratio
+   as the tile, so height binds before max-width does, and 160px fills ~88%
+   of the tile's content box at full width. The min(...,100%) is
+   cap is expressed on the WIDTH axis on purpose: 213px is 160 x 4/3, so for
+   a 4:3 asset it caps the height at 160 without ever depending on a
+   percentage height. aspect-ratio yields to content, and a percentage
+   max-height is indefinite inside the flex-based partners grid, so a
+   height-side cap lets a logo force its own tile taller than 4/3. A
+   width-side cap resolves against the track's definite width in both the
+   grid and flex sections, so every tile stays a true 4/3 at every width. */
 .school-block__logo {
-  max-height: min(160px, 100%);
-  max-width: 100%;
+  max-height: 100%;
+  max-width: min(100%, 213px);   /* 213 = 160 x 4/3 */
   width: auto;
   height: auto;
 }
@@ -696,8 +701,8 @@ img { max-width: 100%; height: auto; display: block; }
 }
 
 .partner-card__logo {
-  max-height: min(128px, 100%);
-  max-width: 100%;
+  max-height: 100%;
+  max-width: min(100%, 213px);   /* 213 = 160 x 4/3 */
   width: auto;
   height: auto;
 }
