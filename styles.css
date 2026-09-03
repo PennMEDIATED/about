@@ -465,51 +465,11 @@ img { max-width: 100%; height: auto; display: block; }
   margin-bottom: var(--space-300);   /* 24px before the grid */
 }
 
-.related-centers__grid {
-  display: grid;
-  /* Intrinsic column count: the track floor decides how many fit, so there
-     are no breakpoints to keep in sync and adding tiles needs no CSS change.
-     min(260px, 100%) rather than a bare 260px — a bare minmax floor cannot
-     shrink below itself and overflows viewports narrower than the track.
-     auto-fill, not auto-fit: empty trailing tracks are what keep a 2-tile
-     section the same tile size as an 8-tile one instead of stretching. */
-  grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr));
-  gap: var(--space-200);
-}
-
 /* 4:3 tile, sized off its own width (aspect-ratio) — same reasoning as
    .school-block__link above. Since height tracks width rather than a
    fixed px value, --tight's smaller padding no longer needs to be offset
    by anything to keep it the same height as its neighbors; it's already
    guaranteed by sharing the same grid column width. */
-.center-block {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  aspect-ratio: 4 / 3;
-  padding: var(--space-300) var(--space-200);
-  background: var(--c-white);
-  border: 1px solid rgba(13, 13, 12, 0.08);
-  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
-}
-
-.center-block:hover {
-  box-shadow: 0 12px 24px rgba(13, 13, 12, 0.16);
-  transform: translateY(-4px);
-}
-
-/* max-height + max-width with height/width auto — the browser shrinks
-   proportionally to satisfy whichever bound is tighter, so no logo
-   (regardless of aspect ratio, e.g. PORES' very wide wordmark) ever gets
-   squashed the way a fixed height + max-width alone can distort it. */
-.center-block__logo {
-  max-height: 100%;
-  max-width: min(100%, 213px);   /* 213 = 160 x 4/3 */
-  width: auto;
-  height: auto;
-}
-
 /* =============================================================================
    INTERDISCIPLINARY HUB  (orbital)
    Figma: 1440×652, fills IMAGE ref=29d9b9807cc2 (FILL scale)
@@ -566,9 +526,16 @@ img { max-width: 100%; height: auto; display: block; }
   margin-bottom: var(--space-500);   /* 40px before list */
 }
 
-/* School logo grid — white crest tiles floating on the gradient, same
-   card pattern as the /grants repo's eligible-schools grid. */
-.school-grid {
+/* =============================================================================
+   LOGO TILE SYSTEM
+   One grid, one tile, one logo cap — shared by the school grid (Orbital), the
+   related-centres grid and the external-partners cards. These three sections
+   are the same component; keeping them as three near-identical rule sets is
+   what let their logo caps drift to 128/128/152px and let the partners' flex
+   row behave differently from the other two. A new logo section is markup
+   only: .logo-grid > .logo-tile > .logo-tile__img.
+   ============================================================================= */
+.logo-grid {
   display: grid;
   /* Intrinsic column count: the track floor decides how many fit, so there
      are no breakpoints to keep in sync and adding tiles needs no CSS change.
@@ -578,15 +545,12 @@ img { max-width: 100%; height: auto; display: block; }
      section the same tile size as an 8-tile one instead of stretching. */
   grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr));
   gap: var(--space-200);
-  margin-bottom: var(--space-400);   /* 32px */
 }
 
-/* 4:3 tile, sized off its own width (aspect-ratio) rather than a fixed
-   px height — stays 4:3 at every grid breakpoint (4/2/1 columns) since
-   height always tracks whatever the column width happens to be, and
-   every tile in the section shares that same column width, so they stay
-   the same height as each other automatically too. */
-.school-block__link {
+/* 4:3 tile, sized off its own column width rather than a fixed px height, so
+   every tile in a section matches its neighbours automatically at every width
+   without a single height value to maintain. */
+.logo-tile {
   position: relative;
   display: flex;
   align-items: center;
@@ -595,32 +559,37 @@ img { max-width: 100%; height: auto; display: block; }
   padding: var(--space-300) var(--space-200);
   background: var(--c-white);
   border: 1px solid rgba(13, 13, 12, 0.08);
+  text-decoration: none;
   transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
 }
 
-.school-block__link:hover {
+.logo-tile:hover {
   box-shadow: 0 12px 24px rgba(13, 13, 12, 0.16);
   transform: translateY(-4px);
 }
 
-/* One cap for every logo tile on the page — school, related-centre and
-   partner alike: min(160px, 100%). Every logo asset is 4:3, the same ratio
-   as the tile, so height binds before max-width does, and 160px fills ~88%
-   of the tile's content box at full width. The min(...,100%) is
-   cap is expressed on the WIDTH axis on purpose: 213px is 160 x 4/3, so for
-   a 4:3 asset it caps the height at 160 without ever depending on a
-   percentage height. aspect-ratio yields to content, and a percentage
-   max-height is indefinite inside the flex-based partners grid, so a
-   height-side cap lets a logo force its own tile taller than 4/3. A
-   width-side cap resolves against the track's definite width in both the
-   grid and flex sections, so every tile stays a true 4/3 at every width. */
-.school-block__logo {
+/* The cap is on the WIDTH axis on purpose: 213px is 160 x 4/3, so for a 4:3
+   asset it caps the height at 160 without depending on a percentage height.
+   aspect-ratio yields to content, and a percentage max-height goes indefinite
+   in some containers, so a height-side cap lets a logo force its own tile
+   taller than 4/3. A width-side cap resolves against the track's definite
+   width everywhere. */
+.logo-tile__img {
   max-height: 100%;
   max-width: min(100%, 213px);   /* 213 = 160 x 4/3 */
   width: auto;
   height: auto;
 }
 
+/* School logo grid — white crest tiles floating on the gradient, same
+   card pattern as the /grants repo's eligible-schools grid. */
+.school-grid { margin-bottom: var(--space-400); }   /* 32px — this section only */
+
+/* 4:3 tile, sized off its own width (aspect-ratio) rather than a fixed
+   px height — stays 4:3 at every grid breakpoint (4/2/1 columns) since
+   height always tracks whatever the column width happens to be, and
+   every tile in the section shares that same column width, so they stay
+   the same height as each other automatically too. */
 /* =============================================================================
    EXTERNAL PARTNERS
    Purple block, white text — cards stay white so the partner logos still
@@ -663,18 +632,6 @@ img { max-width: 100%; height: auto; display: block; }
   background: transparent;
 }
 
-.partners__grid {
-  display: grid;
-  /* Intrinsic column count: the track floor decides how many fit, so there
-     are no breakpoints to keep in sync and adding tiles needs no CSS change.
-     min(260px, 100%) rather than a bare 260px — a bare minmax floor cannot
-     shrink below itself and overflows viewports narrower than the track.
-     auto-fill, not auto-fit: empty trailing tracks are what keep a 2-tile
-     section the same tile size as an 8-tile one instead of stretching. */
-  grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr));
-  gap: var(--space-200);
-}
-
 /* A plain grid item now. The tile width comes from the shared track floor,
    so these come out the same size as the school and centre tiles without
    any width arithmetic to update when a partner is added. Block, not a
@@ -684,27 +641,3 @@ img { max-width: 100%; height: auto; display: block; }
   display: block;
 }
 
-.partner-card__link {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  aspect-ratio: 4 / 3;
-  padding: var(--space-300);
-  background: var(--c-white);
-  border: 1px solid rgba(13, 13, 12, 0.08);
-  text-decoration: none;
-  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
-}
-
-.partner-card__link:hover {
-  box-shadow: 0 12px 24px rgba(13, 13, 12, 0.16);
-  transform: translateY(-4px);
-}
-
-.partner-card__logo {
-  max-height: 100%;
-  max-width: min(100%, 213px);   /* 213 = 160 x 4/3 */
-  width: auto;
-  height: auto;
-}
