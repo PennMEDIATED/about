@@ -23,13 +23,18 @@
   --c-light-bg:   #f8f7f4;          /* rgb(248,247,244)*/
   --c-accent:     #5533ee;          /* rgb(85,51,238)  */
   --c-red:        #f03d1f;          /* rgb(240,61,31)  */
+  /* Deeper red-orange — the gradient's closing stop, promoted to a token
+     of its own. Link text on a white/light ground uses this: --c-red
+     only reaches ~3.9:1 against white, this clears 4.5:1. --c-red stays
+     the brand accent for fills, borders, icons, tags and labels. */
+  --c-red-dark:   #df3611;
   --c-gray:       #888680;          /* rgb(136,134,128)*/
   --c-white:      #ffffff;
 
   /* Paragraph+Background gradient (orbital overlay)
      stop 0 = #5533ee, stop 81% = #df3611 (rgb 223,54,17)
      angle ≈ 150 deg based on Figma handle positions              */
-  --c-gradient: linear-gradient(150deg, #5533ee 0%, #df3611 81%);
+  --c-gradient: linear-gradient(150deg, #5533ee 0%, var(--c-red-dark) 81%);
 
   /* ── Figma typography tokens ── */
   --f-serif: 'EB Garamond', Georgia, 'Times New Roman', serif;
@@ -399,23 +404,38 @@ img { max-width: 100%; height: auto; display: block; }
   padding-left: 0;   /* cancels .mission__quote figcaption's own padding — the card's own padding (on the figure) already insets it */
 }
 
-/* The row actually wraps around ~1103px (not the ~928px math above would
-   suggest — the flex-basis values are minimums, not hard caps, so the
-   row holds together a bit longer). Breakpoint bumped to 1120px so the
-   centered/widened treatment kicks in exactly when wrapping happens,
-   instead of leaving a gap where it's wrapped but still left-aligned. */
+/* Below 1120px the body copy and the quote box stop sharing a line and
+   stack instead.
+
+   This used to be done by widening the quote's flex-basis to 75% and
+   trusting `flex-wrap: wrap` to push it onto its own line. It didn't
+   wrap: the row is a single flex line until its contents hit min-content,
+   which doesn't happen until ~760px. So between 1120px and ~900px the
+   quote sat beside a .mission__body that had been starved down to about
+   140px — a one-or-two-word-per-line sliver of text — because the body's
+   `flex: 1 1 0` gives it a zero basis while the quote asked for 75%.
+
+   Switching the row to `flex-direction: column` makes the stack explicit
+   rather than emergent, so the body always gets the full width. Note the
+   quote is sized with `width`, not `flex-basis`: in a column container
+   flex-basis sizes the main axis, which is now height. */
 @media (max-width: 1120px) {
+  .mission__row {
+    flex-direction: column;
+    align-items: stretch;   /* body copy runs full width; the quote's own
+                               width + auto margins centre it below */
+  }
+
   .mission__quote--box {
     width: clamp(min(280px, 100%), 75%, 860px);
     max-width: 860px;
-    margin-inline: auto;   /* centers the box on its own wrapped line */
+    margin-inline: auto;   /* centers the box on its own line */
   }
   /* Same specificity as the row's own ".mission__row .mission__quote--box
      { margin-inline: 0; }" rule above, so this (later in the cascade)
-     wins once wrapped — otherwise that more-specific rule kept pinning
-     the box to the left even after it dropped to its own line. */
+     wins — otherwise that more-specific rule keeps pinning the box left. */
   .mission__row .mission__quote--box {
-    flex-basis: clamp(min(280px, 100%), 75%, 860px);
+    flex: 0 0 auto;
     margin-inline: auto;
   }
 }
