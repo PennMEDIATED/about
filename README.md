@@ -86,6 +86,21 @@ This repo doesn't currently define `--c-gray-dark` or `--c-pale-orange` — both
   All three logo sections share that one line, which is the whole responsive story — 1 column up to ~480px, then 2, 3 and 4 as the viewport grows. Adding or removing tiles needs no CSS change, which is the point: the old version hard-coded `repeat(4)` with 900px and 480px overrides in two places, and hand-computed `width: calc((100% - 3 * var(--space-200)) / 4)` for the partners, so a fifth partner would have silently broken the arithmetic.
 
   Three details are load-bearing. **`min(260px, 100%)`** rather than a bare `260px`: a bare minmax floor cannot shrink below itself and overflows viewports narrower than the track. **`auto-fill`, not `auto-fit`**: empty trailing tracks are exactly what keeps the 2-tile partners row at the same tile size as the 8-tile school row, instead of stretching two tiles across the full width. And **`.partner-card` is `display: block`**, not a flex column — a column flex container sizes itself from its item, which let the tile inside drift a few pixels off 4/3 at some widths.
+## Embedding this page
+
+WordPress renders the real site; this repo is the source. The launch plan is direct-to-disk deployment, which needs no iframe — but iframe embedding still works and is the documented fallback, so keep this snippet accurate if you rename the repo or change its Pages URL.
+
+Paste into a WordPress Code block (or Divi Code module) as one line:
+
+```html
+<iframe id="pm-about" src="https://pennmediated.github.io/about/" title="About the Center — Penn MEDIATED" loading="lazy" style="width:100%;height:4500px;border:0;display:block"></iframe><script>(function(){var f=document.getElementById('pm-about');window.addEventListener('message',function(e){if(e.source!==f.contentWindow)return;var d=e.data||{},h=d.frameHeight||(d.type==='partners-page-resize'?d.height:0);if(h)f.style.height=h+'px';});})();</script>
+```
+
+The `height` in the snippet is only the starting value. Every Penn MEDIATED page posts its real height to the parent as `{{ frameHeight: <int> }}` — on load, on resize, once webfonts settle, and on any `ResizeObserver` change, so reveal animations, expanding cards and `<details>` toggles all resize the frame. The listener in the snippet applies it. `grants-rfp` also emits an older `{{ type: 'partners-page-resize', height }}` message; the snippet accepts both.
+
+The page checks `window.self === window.top` before posting, so opening it directly does nothing. If you add a new page repo, copy the script from the bottom of this `index.html` so it behaves the same way.
+
+
 ## Images and video
 
 This applies to every image, GIF and video added to any Penn MEDIATED repo. It is written to be followed directly — by a person or by a Claude session — without further instruction.
