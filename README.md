@@ -86,13 +86,43 @@ This repo doesn't currently define `--c-gray-dark` or `--c-pale-orange` — both
   All three logo sections share that one line, which is the whole responsive story — 1 column up to ~480px, then 2, 3 and 4 as the viewport grows. Adding or removing tiles needs no CSS change, which is the point: the old version hard-coded `repeat(4)` with 900px and 480px overrides in two places, and hand-computed `width: calc((100% - 3 * var(--space-200)) / 4)` for the partners, so a fifth partner would have silently broken the arithmetic.
 
   Three details are load-bearing. **`min(260px, 100%)`** rather than a bare `260px`: a bare minmax floor cannot shrink below itself and overflows viewports narrower than the track. **`auto-fill`, not `auto-fit`**: empty trailing tracks are exactly what keeps the 2-tile partners row at the same tile size as the 8-tile school row, instead of stretching two tiles across the full width. And **`.partner-card` is `display: block`**, not a flex column — a column flex container sizes itself from its item, which let the tile inside drift a few pixels off 4/3 at some widths.
-- **Hyperlinks in body copy**: this page has no inline links inside flowing prose today — every `<a>` here is a whole-card/tile link or a nav/footer/CTA link, not a link embedded mid-sentence in a paragraph.
+## Hyperlinks
 
-  The **intended** rule, by background context: on a white/light background, inline links are black text with an underline, turning `--c-red` (red-orange) on hover. On a colored or gradient background (purple/red brand surfaces), inline links are white text with a slight fade (opacity) on hover — no color swap, since white-to-anything-else reads poorly on a saturated background.
+One taxonomy, five categories, shared by every page repo. Pick the category by what the link *is*, not by which repo you happen to be editing.
 
-  **What's actually implemented doesn't consistently follow that rule yet** — checked the real code: `events`' `.event-card__caption a` uses a `border-bottom` rather than a true `underline`, and its hover changes both text color and border color to red (close to the rule, but not identical). `data`'s `.intro__body a` is underlined but its hover only fades the underline color — text never turns red-orange. `grants` doesn't have a matching rule at all, despite an earlier version of this note claiming it did. `blog` has no dedicated inline-link rule either. None of the colored/gradient-background repos currently implement the "white text, fade on hover" half of the rule in an inline-link context (`about`'s own `.card-arrow` fades via a full gradient-slide animation, not a simple opacity fade, so it isn't a template for this either).
+**1. In-text links** — embedded mid-sentence in flowing prose.
 
-  So: the two-context rule above is the target, not the current state. Don't copy any single existing repo's implementation as "the" pattern — if this page gets an inline link before the sitewide style guide catches up, implement the intended rule directly here (white-bg case: `color: var(--c-dark)`, `text-decoration: underline`, hover `color: var(--c-red)`) rather than matching whichever repo happens to be closest.
+| ground | text | underline | hover |
+| --- | --- | --- | --- |
+| white / light | `--c-dark` | `border-bottom: 1px solid rgba(13, 13, 12, 0.35)` | text and underline both turn `--c-red` |
+| colour / gradient | `--c-white` | `border-bottom: 1px solid rgba(255, 255, 255, 0.5)` | fade to `opacity: 0.7` — no colour swap |
+
+The underline is a `border-bottom`, not `text-decoration`, so its colour can be transitioned independently of the text on hover. Pair it with `transition: color 0.15s, border-color 0.15s` on light grounds and `transition: opacity 0.15s` on coloured ones.
+
+White-to-anything reads poorly on a saturated ground, which is why the coloured case fades instead of changing hue.
+
+**2. Independent links** — a standalone text link that isn't inside a sentence ("Learn More About the Center", "Download the Full Schedule"). Same colours, decoration and hover as category 1, **plus a thin arrow** `⟶` after the text. Use `⟶` (`&#10230;`), not the `↗` badge from category 4.
+
+**3. Document buttons** — an independent link that opens a document (a PDF, a report). A filled button box, not text:
+
+| ground | box | text |
+| --- | --- | --- |
+| white / light | `--c-red` | `--c-white` |
+| colour / gradient | `--c-white` | `--c-dark` |
+
+Hover is **movement, not colour** — a lift or nudge. Do not darken or recolour the box.
+
+**4. Links to another web page** — this site or an external one. The containing box carries the shared `.card-arrow`: a 26px dark circle with a white `↗`, in the box's top corner. On hover the arrow scales slightly and its background becomes a sliding purple-to-orange gradient (`@keyframes card-arrow-slide`), and the box itself animates. No separate text button — the whole box is the link.
+
+**Exception:** a link to a research paper is category 2, not this — thin arrow, no badge.
+
+**5. Hyperlinked headings** — a heading that is itself a link (a post title, a card title). Colour shift on hover per the ground rules above, and **no arrow and no underline**.
+
+### Dropdowns and disclosures
+
+A dropdown, `<details>` block or expand/collapse control uses one affordance sitewide: a **chevron SVG** (`M2 5l5 5 5-5`, 13×13, `--c-red` stroke, `stroke-width: 1.8`) beside a `--c-red` label at `--fs-small`, rotating `180deg` on open with `transition: transform 0.25s`. See `llm-civic-discourse`'s "Full summary & details" toggle for the reference implementation.
+
+Never leave the marker to the browser — style `<select>` with `appearance: none` and supply the chevron, and hide the native `<summary>` marker. The `↗` circle badge is category 4's language and does not belong on a disclosure control.
 
 ### `about`-specific components (not currently used in `home`/`grants`)
 
