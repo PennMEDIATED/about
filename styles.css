@@ -609,6 +609,51 @@ img { max-width: 100%; height: auto; display: block; }
   height: auto;
 }
 
+/* Phone sizing for every logo section at once (schools, partners,
+   centres all share this component).
+
+   600px is not an arbitrary breakpoint: it is exactly where the track
+   floor above stops fitting two columns (2 x 260px + 16px gap = 536px of
+   content, plus the 32px side padding either side), so below it every
+   tile went full-bleed — 350px wide and, at 4/3, 263px tall to hold a
+   logo capped at 213 x 160. That left more empty tile than logo and made
+   the three sections ~7,000px of scrolling on a 390px phone.
+
+   Two fixed columns rather than a smaller auto-fill floor: below this
+   width the intrinsic count only ever resolves to 1 or 2, so stating 2
+   is both what actually happens and easier to reason about. The shorter
+   3/2 ratio and tighter padding then take the remaining slack out of the
+   box, so the logo — not the white space around it — is what scales. */
+@media (max-width: 600px) {
+  .logo-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-150);   /* 12px */
+  }
+
+  .logo-tile {
+    aspect-ratio: 3 / 2;
+    /* Horizontal padding stays at 16px: it is what keeps a full-width
+       logo clear of the external-link badge in the top-right corner.
+       Only the vertical padding comes down. */
+    padding: var(--space-150) var(--space-200);
+  }
+
+  /* The 213px cap is inert at this size (100% of the tile is well under
+     it), so the logo is free to use the full width the tile now gives it. */
+  .logo-tile__img {
+    max-width: 100%;
+  }
+
+  /* Badge scales with the smaller tile — at 26px it read as oversized
+     against a 111px-tall card and crowded the wider logos. */
+  .card-arrow {
+    top: var(--space-075);     /* 6px */
+    right: var(--space-075);
+    width: 22px;
+    height: 22px;
+  }
+}
+
 /* School logo grid — white crest tiles floating on the gradient, same
    card pattern as the /grants repo's eligible-schools grid. */
 .school-grid { margin-bottom: var(--space-400); }   /* 32px — this section only */

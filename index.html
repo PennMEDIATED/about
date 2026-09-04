@@ -198,6 +198,25 @@
     // permanently invisible content; it just renders normally instead.
     document.documentElement.classList.add('js-reveal-ready');
 
+    // How much of a section has to be showing before it fades in.
+    // A percentage threshold is the wrong unit here: sections are far
+    // taller relative to a phone viewport than a desktop one, so the old
+    // `threshold: 0.15` meant a phone had to scroll most of the way
+    // through a section's heading before 15% of its height had entered
+    // the viewport — the fade kept arriving late, and on the tallest
+    // sections it read as content that simply wasn't there. A pixel
+    // trigger is viewport-independent: the fade starts as soon as this
+    // much of the section has cleared the bottom edge, at any screen
+    // size, and phones get the shortest sliver of all so the reveal is
+    // already underway as the section appears.
+    var revealSliver =
+      window.matchMedia && window.matchMedia('(max-width: 900px)').matches ? 4 : 24;
+
+    // Shared by both observers below so the two reveal styles stay in
+    // step — a section and its neighbours should never trip at
+    // different points on the same scroll.
+    var revealOptions = { threshold: 0, rootMargin: '0px 0px -' + revealSliver + 'px 0px' };
+
     // One-shot fade-in for most sections: each fades in the first time it
     // scrolls into view and then stays visible, even when scrolled back
     // up past it. Sections marked .reveal--toggle (Orbital, Partners) are
@@ -211,7 +230,7 @@
             revealObserver.unobserve(entry.target);
           }
         });
-      }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+      }, revealOptions);
       oneShotEls.forEach(function (el) { revealObserver.observe(el); });
     } else {
       document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('is-visible'); });
@@ -228,7 +247,7 @@
         entries.forEach(function (entry) {
           entry.target.classList.toggle('is-visible', entry.isIntersecting);
         });
-      }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+      }, revealOptions);
       toggleEls.forEach(function (el) { toggleObserver.observe(el); });
     } else {
       toggleEls.forEach(function (el) { el.classList.add('is-visible'); });
