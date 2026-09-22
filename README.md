@@ -1,6 +1,6 @@
 # Penn MEDIATED — About
 
-The About page for the [Center on Media, Technology and Democracy](https://infodem.upenn.edu). Static HTML/CSS, no build step — same conventions as the [`home`](https://github.com/PennMEDIATED/home) and [`grants`](https://github.com/PennMEDIATED/grants) repos (shared spacing tokens, brand colors, and fonts). This page doesn't currently include the "Subscribe Here" newsletter/supporters block that `home` and `grants` share with each other.
+The About page for the [Center on Media, Technology and Democracy](https://mediated.upenn.edu). Static HTML/CSS, no build step — same conventions as the [`home`](https://github.com/PennMEDIATED/home) and [`grants`](https://github.com/PennMEDIATED/grants) repos (shared spacing tokens, brand colors, and fonts). This page doesn't currently include the "Subscribe Here" newsletter/supporters block that `home` and `grants` share with each other.
 
 - `index.html` — page markup
 - `styles.css` — all styling (design tokens live at the top in `:root`)
