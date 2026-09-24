@@ -237,7 +237,9 @@ img { max-width: 100%; height: auto; display: block; }
 .mission {
   position: relative;
   background: var(--c-bg);
-  padding-top: var(--space-250);
+  /* Top of page: 80px from the site menu to the page title, the same on
+     every page (--space-1000, the documented page-level rhythm). */
+  padding-top: var(--space-1000);
   padding-bottom: var(--space-1000); /* 80px — page-level spacing, matches Orbital/Partners/Related Centers */
 }
 
