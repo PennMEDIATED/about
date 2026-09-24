@@ -626,7 +626,10 @@ img { max-width: 100%; height: auto; display: block; }
    box, so the logo — not the white space around it — is what scales. */
 @media (max-width: 600px) {
   .logo-grid {
-    grid-template-columns: repeat(2, 1fr);
+    /* minmax(0, 1fr), not bare 1fr: a bare 1fr track can't shrink below a
+       logo's natural width, and Safari counts that width, so wide logos
+       pushed the second column off the right edge of a phone screen. */
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-150);   /* 12px */
   }
 
@@ -641,7 +644,15 @@ img { max-width: 100%; height: auto; display: block; }
   /* The 213px cap is inert at this size (100% of the tile is well under
      it), so the logo is free to use the full width the tile now gives it. */
   .logo-tile__img {
-    max-width: 100%;
+    /* Centred absolutely inside the tile so its caps resolve against the
+       tile's own 3:2 box. In flow, Safari ignored max-height: 100% here and
+       let 4:3 logos stretch their tile taller than its row neighbours. */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: calc(100% - 2 * var(--space-200));
+    max-height: calc(100% - 2 * var(--space-150));
   }
 
   /* Badge scales with the smaller tile — at 26px it read as oversized
