@@ -728,13 +728,13 @@ img { max-width: 100%; height: auto; display: block; }
 }
 
 
-/* ── Trailing gap before the site footer ──────────────────────────────
-   This page ends on a full-width colour band, whose own --space-1000
-   padding is internal to the band. Without this rule the band's colour
-   runs straight into the footer, while every white-ending page repo
-   shows 80px of white first. This makes the gap consistent sitewide.
-   ------------------------------------------------------------------ */
-body { padding-bottom: var(--space-1000); }
+/* ── Page end ──────────────────────────────────────────────────────────
+   Sitewide (Sept 2026): the last section sits flush on the global footer,
+   which opens with its own 132px white signal band. That band is the gap
+   before the footer on every page. The old 80px trailing space on top of it
+   left 200px+ of white at the end of some pages. */
+body { padding-bottom: 0; }
+.related-centers { margin-bottom: 0; }
 
 /* ── Trailing-margin guard ─────────────────────────────────────────────────
    These pages are embedded in an iframe that is resized to the height this
