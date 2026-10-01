@@ -599,16 +599,24 @@ img { max-width: 100%; height: auto; display: block; }
   transform: translateY(-4px);
 }
 
-/* The cap is on the WIDTH axis on purpose: 213px is 160 x 4/3, so for a 4:3
-   asset it caps the height at 160 without depending on a percentage height.
+/* The sizing is on the WIDTH axis on purpose: 213px is 160 x 4/3, so for a 4:3
+   asset it resolves the height to 160 without depending on a percentage height.
    aspect-ratio yields to content, and a percentage max-height goes indefinite
-   in some containers, so a height-side cap lets a logo force its own tile
-   taller than 4/3. A width-side cap resolves against the track's definite
-   width everywhere. */
+   in some containers, so a height-side value lets a logo force its own tile
+   taller than 4/3. A width-side value resolves against the track's definite
+   width everywhere.
+
+   width, not max-width: a cap can only shrink. Every asset here is wider than
+   213px intrinsically, so a cap happened to size them all identically and hid
+   that — until hci-logo.svg, a 71px-wide export, which a cap left at 71px in a
+   260px tile while its neighbours filled theirs. Setting width makes the tile
+   width govern in both directions, so a small export scales up to match.
+   max-height stays as the guard for a portrait logo: when it binds, the
+   replaced-element sizing rules recompute the width from the ratio, so the
+   logo shrinks proportionally rather than distorting. */
 .logo-tile__img {
   max-height: 100%;
-  max-width: min(100%, 213px);   /* 213 = 160 x 4/3 */
-  width: auto;
+  width: min(100%, 213px);   /* 213 = 160 x 4/3 */
   height: auto;
 }
 
