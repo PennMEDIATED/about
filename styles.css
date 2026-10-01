@@ -229,6 +229,7 @@ img { max-width: 100%; height: auto; display: block; }
 .school-block:nth-child(8),  .center-block:nth-child(8)  { transition-delay: 0.47s; }
 .center-block:nth-child(9)  { transition-delay: 0.53s; }
 .center-block:nth-child(10) { transition-delay: 0.59s; }
+.center-block:nth-child(11) { transition-delay: 0.65s; }
 
 /* =============================================================================
    MISSION STATEMENT  (chapter)
